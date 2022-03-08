@@ -18,6 +18,7 @@
   },
   "bs-dependencies": [
     "@rescript/react",
-    "rescript-webapi"
+    "rescript-webapi",
+    "bs-fetch"
   ]
 }
