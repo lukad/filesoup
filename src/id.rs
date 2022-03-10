@@ -1,9 +1,10 @@
 use rand::{seq::SliceRandom, thread_rng};
 
-const INGREDIENTS: [&str; 34] = [
+const INGREDIENTS: [&str; 35] = [
     "avocado",
     "basil",
     "beans",
+    "beets",
     "broccoli",
     "broth",
     "cabbage",
