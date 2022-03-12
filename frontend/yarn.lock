@@ -807,10 +807,10 @@ bittorrent-protocol@^3.5.1:
     speedometer "^1.1.0"
     unordered-array-remove "^1.0.2"
 
-bittorrent-tracker@^9.18.4:
-  version "9.18.4"
-  resolved "https://registry.yarnpkg.com/bittorrent-tracker/-/bittorrent-tracker-9.18.4.tgz#7dcd9ec28cb12f3bd984b727d9f4fdf7428a109e"
-  integrity sha512-QpGYWMUab4CykgyJX/XcLdfQRp/Dg4qtGZqQTQlDtIXYHj9wnsO6dCH1jHWdGTyFfeofnuEjahUpaxquPZlyBQ==
+bittorrent-tracker@^9.18.3:
+  version "9.18.3"
+  resolved "https://registry.yarnpkg.com/bittorrent-tracker/-/bittorrent-tracker-9.18.3.tgz#0b2d8a20c8974d118c010b2fc99ff4d914e6cb92"
+  integrity sha512-IhLKp8wUgA7WXTfJggw/HB8qxhwlLNDWRraUFxXRHTgOQXcMiKITGcErzvC7B7mMOcUnk0wiUsZdaaQ8lzz3LQ==
   dependencies:
     bencode "^2.0.1"
     bittorrent-peerid "^1.3.3"
@@ -946,12 +946,12 @@ browserify-sign@^4.0.0:
     safe-buffer "^5.2.0"
 
 browserslist@^4.0.0, browserslist@^4.16.6, browserslist@^4.6.6:
-  version "4.20.0"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.20.0.tgz#35951e3541078c125d36df76056e94738a52ebe9"
-  integrity sha512-bnpOoa+DownbciXj0jVGENf8VYQnE2LNWomhYuCsMmmx9Jd9lwq0WXODuwpSsp8AVdKM2/HorrzxAfbKvWTByQ==
+  version "4.19.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.19.3.tgz#29b7caad327ecf2859485f696f9604214bedd383"
+  integrity sha512-XK3X4xtKJ+Txj8G5c30B4gsm71s69lqXlkYui4s6EkKxuv49qjYlY6oVd+IFJ73d4YymtM3+djvvt/R/iJwwDg==
   dependencies:
-    caniuse-lite "^1.0.30001313"
-    electron-to-chromium "^1.4.76"
+    caniuse-lite "^1.0.30001312"
+    electron-to-chromium "^1.4.71"
     escalade "^3.1.1"
     node-releases "^2.0.2"
     picocolors "^1.0.0"
@@ -1056,10 +1056,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001313:
-  version "1.0.30001314"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001314.tgz#65c7f9fb7e4594fca0a333bec1d8939662377596"
-  integrity sha512-0zaSO+TnCHtHJIbpLroX7nsD+vYuOVjl3uzFbJO1wMVbuveJA0RK2WcQA9ZUIOiO0/ArMiMgHJLxfEZhQiC0kw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001312:
+  version "1.0.30001312"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001312.tgz#e11eba4b87e24d22697dae05455d5aea28550d5f"
+  integrity sha512-Wiz1Psk2MEK0pX3rUzWaunLTZzqS2JYZFzNKqAiJGiuxIjRPLgV6+VDPOg6lQOUxmDwhTlh198JsTTi8Hzw6aQ==
 
 caniuse-lite@^1.0.30001297, caniuse-lite@^1.0.30001313:
   version "1.0.30001314"
@@ -1327,17 +1327,17 @@ cssesc@^3.0.0:
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
-cssnano-preset-default@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-5.2.1.tgz#a83b15d3294c69bd1cedd14b0066c2f2357d108e"
-  integrity sha512-Y+CUCS5iZ1uzHn5KtmKIlysQVXrTtLCnYsYTOJcbdd5rghOwtw1gobvEXefBncjGO4fWwGZr9/n9hwZfo6W1Fw==
+cssnano-preset-default@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/cssnano-preset-default/-/cssnano-preset-default-5.2.0.tgz#2579d38b9217746f2cf9f938954a91e00418ded6"
+  integrity sha512-3N5Vcptj2pqVKpHVqH6ezOJvqikR2PdLTbTrsrhF61FbLRQuujAqZ2sKN5rvcMsb7hFjrNnjZT8CGEkxoN/Pwg==
   dependencies:
     css-declaration-sorter "^6.0.3"
     cssnano-utils "^3.1.0"
     postcss-calc "^8.2.3"
     postcss-colormin "^5.3.0"
     postcss-convert-values "^5.1.0"
-    postcss-discard-comments "^5.1.1"
+    postcss-discard-comments "^5.1.0"
     postcss-discard-duplicates "^5.1.0"
     postcss-discard-empty "^5.1.0"
     postcss-discard-overridden "^5.1.0"
@@ -1360,7 +1360,7 @@ cssnano-preset-default@^5.2.1:
     postcss-reduce-initial "^5.1.0"
     postcss-reduce-transforms "^5.1.0"
     postcss-svgo "^5.1.0"
-    postcss-unique-selectors "^5.1.1"
+    postcss-unique-selectors "^5.1.0"
 
 cssnano-utils@^3.1.0:
   version "3.1.0"
@@ -1368,11 +1368,11 @@ cssnano-utils@^3.1.0:
   integrity sha512-JQNR19/YZhz4psLX/rQ9M83e3z2Wf/HdJbryzte4a3NSuafyp9w/I4U+hx5C2S9g41qlstH7DEWnZaaj83OuEA==
 
 cssnano@^5.0.15:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-5.1.1.tgz#2df44d26461b95f699096b6830df5107b1a758f4"
-  integrity sha512-WWfN7jBK/3Uk3oX/jsFbQApDf9DkXj6dOYull5ZaSGskcDggzg3RyDZI4GKKO+00LdfLMEZtY1cwTQUL+YMg2Q==
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-5.1.0.tgz#cf977d660a5824d0d5542639ed1d4045afd84cbe"
+  integrity sha512-wWxave1wMlThGg4ueK98jFKaNqXnQd1nVZpSkQ9XvR+YymlzP1ofWqES1JkHtI250LksP9z5JH+oDcrKDJezAg==
   dependencies:
-    cssnano-preset-default "^5.2.1"
+    cssnano-preset-default "^5.2.0"
     lilconfig "^2.0.3"
     yaml "^1.10.2"
 
@@ -1490,10 +1490,10 @@ dotenv@^7.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-7.0.0.tgz#a2be3cd52736673206e8a85fb5210eea29628e7c"
   integrity sha512-M3NhsLbV1i6HuGzBUH8vXrtxOk+tWmzWKDMbAVSUp3Zsjm7ywFeuwrUXhmhQyRK1q5B5GGy7hcXPbj3bnfZg2g==
 
-electron-to-chromium@^1.4.76:
-  version "1.4.77"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.77.tgz#c26e454cb8721d4ebdae3e276c57cd32e51c32ed"
-  integrity sha512-fiDxw8mO9Ph1Z0bjX2sFTPpi0J0QkOiwOJF+5Q0J0baNc/F9lLePAvDPlnoxvbUYYMizqrKPeotRRkJ9LtxAew==
+electron-to-chromium@^1.4.71:
+  version "1.4.75"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.75.tgz#d1ad9bb46f2f1bf432118c2be21d27ffeae82fdd"
+  integrity sha512-LxgUNeu3BVU7sXaKjUDD9xivocQLxFtq6wgERrutdY/yIOps3ODOZExK1jg8DTEg4U8TUCb5MLGeWFOYuxjF3Q==
 
 electron-to-chromium@^1.4.76:
   version "1.4.80"
@@ -1766,9 +1766,9 @@ has-flag@^4.0.0:
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
 has-symbols@^1.0.1, has-symbols@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.3.tgz#bb7b2c4349251dce87b125f7bdf874aa7c8b39f8"
-  integrity sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.2.tgz#165d3070c00309752a1236a479331e3ac56f1423"
+  integrity sha512-chXa79rL/UC2KlX17jo3vRGz0azaWEx5tGqZg5pO3NUyEJVB17dMruQlzCCOfUvElghKcm5194+BCRvi2Rv/Gw==
 
 has-tostringtag@^1.0.0:
   version "1.0.0"
@@ -2116,9 +2116,9 @@ lines-and-columns@^1.1.6:
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
 lmdb@^2.0.2:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/lmdb/-/lmdb-2.2.4.tgz#6494d5a1d1db152e0be759edcfa06893e4cbdb53"
-  integrity sha512-gto+BB2uEob8qRiTlOq+R3uX0YNHsX9mjxj9Sbdue/LIKqu6IlZjrsjKeGyOMquc/474GEqFyX2pdytpydp0rQ==
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/lmdb/-/lmdb-2.2.3.tgz#713ffa515c31e042808abf364b4aa0feaeaf6360"
+  integrity sha512-+OiHQpw22mBBxocb/9vcVNETqf0k5vgHA2r+KX7eCf8j5tSV50ZIv388iY1mnnrERIUhs2sjKQbZhPg7z4HyPQ==
   dependencies:
     msgpackr "^1.5.4"
     nan "^2.14.2"
@@ -2633,10 +2633,10 @@ postcss-convert-values@^5.1.0:
   dependencies:
     postcss-value-parser "^4.2.0"
 
-postcss-discard-comments@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/postcss-discard-comments/-/postcss-discard-comments-5.1.1.tgz#e90019e1a0e5b99de05f63516ce640bd0df3d369"
-  integrity sha512-5JscyFmvkUxz/5/+TB3QTTT9Gi9jHkcn8dcmmuN68JQcv3aQg4y88yEHHhwFB52l/NkaJ43O0dbksGMAo49nfQ==
+postcss-discard-comments@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/postcss-discard-comments/-/postcss-discard-comments-5.1.0.tgz#87be4e0953bf599935837b940c701f8d4eca7d0b"
+  integrity sha512-L0IKF4jAshRyn03SkEO6ar/Ipz2oLywVbg2THf2EqqdNkBwmVMxuTR/RoAltOw4piiaLt3gCAdrbAqmTBInmhg==
 
 postcss-discard-duplicates@^5.1.0:
   version "5.1.0"
@@ -2827,10 +2827,10 @@ postcss-svgo@^5.1.0:
     postcss-value-parser "^4.2.0"
     svgo "^2.7.0"
 
-postcss-unique-selectors@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/postcss-unique-selectors/-/postcss-unique-selectors-5.1.1.tgz#a9f273d1eacd09e9aa6088f4b0507b18b1b541b6"
-  integrity sha512-5JiODlELrz8L2HwxfPnhOWZYWDxVHWL83ufOv84NrcgipI7TaeRsatAhK4Tr2/ZiYldpK/wBvw5BD3qfaK96GA==
+postcss-unique-selectors@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/postcss-unique-selectors/-/postcss-unique-selectors-5.1.0.tgz#70a945da1b0599d00f617222a44ba1d82a676694"
+  integrity sha512-LmUhgGobtpeVJJHuogzjLRwJlN7VH+BL5c9GKMVJSS/ejoyePZkXvNsYUtk//F6vKOGK86gfRS0xH7fXQSDtvA==
   dependencies:
     postcss-selector-parser "^6.0.5"
 
@@ -2840,9 +2840,9 @@ postcss-value-parser@^4.2.0:
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
 postcss@^8.4.5:
-  version "8.4.8"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.8.tgz#dad963a76e82c081a0657d3a2f3602ce10c2e032"
-  integrity sha512-2tXEqGxrjvAO6U+CJzDL2Fk2kPHTv1jQsYkSoMeOis2SsYaXRO2COxTdQp99cYvif9JTXaAk9lYGc3VhJt7JPQ==
+  version "8.4.7"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.7.tgz#f99862069ec4541de386bf57f5660a6c7a0875a8"
+  integrity sha512-L9Ye3r6hkkCeOETQX6iOaWZgjp3LL6Lpqm6EtgbKrgqGGteRMNb9vzBfRL96YOSu8o7x3MfIH9Mo5cPJFGrW6A==
   dependencies:
     nanoid "^3.3.1"
     picocolors "^1.0.0"
@@ -3366,9 +3366,9 @@ stream-with-known-length-to-buffer@^1.0.4:
     once "^1.4.0"
 
 streamx@^2.10.3:
-  version "2.12.3"
-  resolved "https://registry.yarnpkg.com/streamx/-/streamx-2.12.3.tgz#b6bdb8705e925801f71f2aba17d33546f1dd2822"
-  integrity sha512-im2U3yhz6NoJQzzn6AwBlb+MRuGLxlnXJXqZudQ9RZzsVcq9+MHTPGR5b4Rh23RSLQenqtBaMwemM61w10VcWQ==
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/streamx/-/streamx-2.12.2.tgz#8c18e588f929ef1dea2ce7f32d12250d988d344f"
+  integrity sha512-NjGPzm2tnLOOPvbE/yxFoAgdYzvgjZkb9i4LgJokAfhLinMv2M7jevpIja+aP/ridUIfge9DGbB223kVzdrEzA==
   dependencies:
     fast-fifo "^1.0.0"
     queue-tick "^1.0.0"
@@ -3539,8 +3539,8 @@ torrent-discovery@^9.4.7:
   dependencies:
     bittorrent-dht "^10.0.2"
     bittorrent-lsd "^1.1.1"
-    bittorrent-tracker "^9.18.4"
-    debug "^4.3.3"
+    bittorrent-tracker "^9.18.3"
+    debug "^4.3.2"
     run-parallel "^1.2.0"
 
 torrent-piece@^2.0.1:
@@ -3615,9 +3615,9 @@ ut_pex@^3.0.2:
     string2compact "^1.3.2"
 
 utf-8-validate@^5.0.5:
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/utf-8-validate/-/utf-8-validate-5.0.9.tgz#ba16a822fbeedff1a58918f2a6a6b36387493ea3"
-  integrity sha512-Yek7dAy0v3Kl0orwMlvi7TPtiCNrdfHNd7Gcc/pLq4BLXqfAmd0J7OWMizUQnTTJsyjKn02mU7anqwfmUP4J8Q==
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/utf-8-validate/-/utf-8-validate-5.0.8.tgz#4a735a61661dbb1c59a0868c397d2fe263f14e58"
+  integrity sha512-k4dW/Qja1BYDl2qD4tOMB9PFVha/UJtxTc1cXYOe3WwA/2m0Yn4qB7wLMpJyLJ/7DR0XnTut3HsCSzDT4ZvKgA==
   dependencies:
     node-gyp-build "^4.3.0"
 
@@ -3673,9 +3673,9 @@ weak-lru-cache@^1.2.2:
   integrity sha512-DEAoo25RfSYMuTGc9vPJzZcZullwIqRDSI9LOy+fkCJPi6hykCnfKaXTuPBDuXAUcqHXyOgFtHNp/kB2FjYHbw==
 
 webtorrent@^1.8.3:
-  version "1.8.5"
-  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.8.5.tgz#f1a35ce0af0fd4add124d03f92193ed890ae45ec"
-  integrity sha512-LPiXC/AqHehu0CWTGrmE4IxPSaXY25qe7FQyvBXRfI1w00mf2PkV6g+UeChdGXVJE2uwcFl02UkjNwL+Yjvdlg==
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.8.3.tgz#06a975796d31516cc3b72b03c049f99f95db86fb"
+  integrity sha512-VZRYk0jvMvMpWPjZJi0pg3B8guX7uLLoDgvsxFdF1KKQDBSy8QVwL5BOJaaC3LGi+RYwBIKRGUy4DiW5SMSyng==
   dependencies:
     "@webtorrent/http-node" "^1.3.0"
     addr-to-ip-port "^1.5.4"
@@ -3716,7 +3716,7 @@ webtorrent@^1.8.3:
     stream-to-blob "^2.0.1"
     stream-to-blob-url "^3.0.2"
     stream-with-known-length-to-buffer "^1.0.4"
-    torrent-discovery "^9.4.9"
+    torrent-discovery "^9.4.7"
     torrent-piece "^2.0.1"
     unordered-array-remove "^1.0.2"
     ut_metadata "^3.5.2"
