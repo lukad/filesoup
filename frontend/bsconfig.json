@@ -19,6 +19,6 @@
   "bs-dependencies": [
     "@rescript/react",
     "rescript-webapi",
-    "bs-fetch"
+    "rescript-heroicons"
   ]
 }
