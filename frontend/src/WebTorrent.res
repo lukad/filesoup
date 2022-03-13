@@ -30,7 +30,7 @@ module Torrent = {
     received: int,
     downloaded: int,
     uploaded: int,
-    downloadSpeed: int,
+    downloadSpeed: float,
     uploadSpeed: int,
     progress: float,
     ratio: float,
@@ -87,4 +87,7 @@ module Client = {
     ~cb: Torrent.t => unit=?,
     unit,
   ) => Torrent.t = "seed"
+
+  @send
+  external remove: (t, string) => unit = "remove"
 }
