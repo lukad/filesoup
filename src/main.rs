@@ -65,7 +65,7 @@ fn get_file(files: &State<Files>, id: &str) -> Option<Json<File>> {
 }
 
 #[post("/files", format = "json", data = "<new_file>")]
-fn add_file<'r>(files: &State<Files>, new_file: Json<NewFile<'r>>) -> Json<File> {
+fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Json<File> {
     let file = File {
         id: id::id(5, "-"),
         magnet_uri: new_file.magnet_uri.to_string(),
@@ -153,8 +153,8 @@ fn rocket() -> _ {
                             "https://{}{}",
                             req.host()
                                 .map(|host| host.to_string())
-                                .unwrap_or("filesoup.io".to_string()),
-                            req.uri().to_string()
+                                .unwrap_or_else(|| "filesoup.io".to_string()),
+                            req.uri()
                         ),
                     )
                     .finalize();
