@@ -1,10 +1,17 @@
 name: Fly Deploy
+
 on:
   push:
     branches:
       - main
+
+concurrency: 
+  group: deploy-${GITHUB_REF_NAME}
+  cancel-in-progress: true
+
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
 jobs:
   deploy:
     name: Deploy app
