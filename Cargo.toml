@@ -10,5 +10,5 @@ rocket = { git = "https://github.com/SergioBenitez/Rocket.git", features = [
 	"json",
 ] }
 serde = { version = "1", features = ["derive"] }
-rust-embed = { version = "6.3.0", features = ["compression"] }
+rust-embed = { version = "6.4.0", features = ["compression"] }
 rand = "0.8.5"
