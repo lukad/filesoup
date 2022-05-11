@@ -1502,6 +1502,11 @@ elliptic@^6.5.3:
     minimalistic-assert "^1.0.1"
     minimalistic-crypto-utils "^1.0.1"
 
+emitter-component@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/emitter-component/-/emitter-component-1.1.1.tgz#065e2dbed6959bf470679edabeaf7981d1003ab6"
+  integrity sha1-Bl4tvtaVm/RwZ57avq95gdEAOrY=
+
 end-of-stream@^1.1.0, end-of-stream@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.4.tgz#5ae64a5f45057baf3626ec14da0ca5e4b2431eb0"
@@ -3126,6 +3131,13 @@ stream-with-known-length-to-buffer@^1.0.4:
   dependencies:
     once "^1.4.0"
 
+stream@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/stream/-/stream-0.0.2.tgz#7f5363f057f6592c5595f00bc80a27f5cec1f0ef"
+  integrity sha1-f1Nj8Ff2WSxVlfALyAon9c7B8O8=
+  dependencies:
+    emitter-component "^1.1.1"
+
 streamx@^2.10.3:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/streamx/-/streamx-2.12.2.tgz#8c18e588f929ef1dea2ce7f32d12250d988d344f"
@@ -3262,6 +3274,13 @@ through@2:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+throughput@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/throughput/-/throughput-1.0.0.tgz#ec0546aea8f830eadf04a689333c52679c3fe282"
+  integrity sha512-owbJr1scbvJjvHkRONwHyY3Z4zIFTr9s0q9o6fYSnc8ur+2RenH88siGBat9agc4AgarrDiYSCZqEvucL6C+KQ==
+  dependencies:
+    stream "^0.0.2"
 
 thunky@^1.0.1:
   version "1.1.0"
@@ -3430,10 +3449,10 @@ weak-lru-cache@^1.2.2:
   resolved "https://registry.yarnpkg.com/weak-lru-cache/-/weak-lru-cache-1.2.2.tgz#fdbb6741f36bae9540d12f480ce8254060dccd19"
   integrity sha512-DEAoo25RfSYMuTGc9vPJzZcZullwIqRDSI9LOy+fkCJPi6hykCnfKaXTuPBDuXAUcqHXyOgFtHNp/kB2FjYHbw==
 
-webtorrent@^1.8.16:
-  version "1.8.16"
-  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.8.16.tgz#4b4056db40cbcd21c09ec6680cb57f27558d4ec6"
-  integrity sha512-cRiCUn+B62KHN+BtQLZ8+9eGJ8aPQtrk9OVnLDehudxY1u/1ajwuE+5p/ho1vT3ysmro0UtCRNnEor0+QmNaDA==
+webtorrent@^1.8.17:
+  version "1.8.17"
+  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.8.17.tgz#e23db2407782963c57b7627c0393b0aadb136466"
+  integrity sha512-/nHflBaMfDUefOegNbg7IQd81UU3YbbP1S8R7YH8aa0CTux214IIpYyxyPJtTD8tDIIHQiQaD6Zzy5gUkQJKYg==
   dependencies:
     "@webtorrent/http-node" "^1.3.0"
     addr-to-ip-port "^1.5.4"
@@ -3470,10 +3489,10 @@ webtorrent@^1.8.16:
     simple-peer "^9.11.1"
     simple-sha1 "^3.1.0"
     speed-limiter "^1.0.2"
-    speedometer "^1.1.0"
     stream-to-blob "^2.0.1"
     stream-to-blob-url "^3.0.2"
     stream-with-known-length-to-buffer "^1.0.4"
+    throughput "^1.0.0"
     torrent-discovery "^9.4.10"
     torrent-piece "^2.0.1"
     unordered-array-remove "^1.0.2"
