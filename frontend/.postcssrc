@@ -1,1 +1,1 @@
-{ "plugins": { "tailwindcss": {}, "autoprefixer": {} } }
+{ "plugins": { "tailwindcss": {} } }
