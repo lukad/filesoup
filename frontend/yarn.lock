@@ -913,19 +913,19 @@ bitfield@^4.0.0, bitfield@^4.1.0:
   resolved "https://registry.yarnpkg.com/bitfield/-/bitfield-4.1.0.tgz#77f3ef4e915e58adaf758b23cbff156959e0fd8e"
   integrity sha512-6cEDG3K+PK9f+B7WyhWYjp09bqSa+uaAaecVA7Y5giFixyVe1s6HKGnvOqYNR4Mi4fBMjfDPLBpHkKvzzgP7kg==
 
-bittorrent-dht@^10.0.4:
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/bittorrent-dht/-/bittorrent-dht-10.0.4.tgz#69d416b8c8498d558fd283fc36ee15c2474ee787"
-  integrity sha512-Yx5cZXU4R+mUbxR2PbKdvOVTizOrePPF8NT3WGCXX5qzJVt8gF8gq9GMBWcmNjHUBYHVigDaRf030hxQ2dJWUg==
+bittorrent-dht@^10.0.6:
+  version "10.0.6"
+  resolved "https://registry.yarnpkg.com/bittorrent-dht/-/bittorrent-dht-10.0.6.tgz#42897a4ae6a8e97cbb6200f6abc9154a8a845236"
+  integrity sha512-Odmfmo36/vr0E4PWicans0fesjCfRib2daGaYfB8WHljPTO/U2820EFOA9HBhzdzekGBhBHlSPVi6Jf9vu7/yQ==
   dependencies:
     bencode "^2.0.3"
-    debug "^4.1.1"
-    k-bucket "^5.0.0"
-    k-rpc "^5.0.0"
+    debug "^4.3.4"
+    k-bucket "^5.1.0"
+    k-rpc "^5.1.0"
     last-one-wins "^1.0.4"
     lru "^3.1.0"
     randombytes "^2.1.0"
-    record-cache "^1.0.2"
+    record-cache "^1.2.0"
     simple-sha1 "^3.1.0"
 
 bittorrent-lsd@^1.1.1:
@@ -2126,7 +2126,7 @@ junk@^3.1.0:
   resolved "https://registry.yarnpkg.com/junk/-/junk-3.1.0.tgz#31499098d902b7e98c5d9b9c80f43457a88abfa1"
   integrity sha512-pBxcB3LFc8QVgdggvZWyeys+hnrNWg4OcZIU/1X59k5jQdLBlCsYGRQaz234SqoRLTCgMH00fY0xRJH+F9METQ==
 
-k-bucket@^5.0.0:
+k-bucket@^5.0.0, k-bucket@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/k-bucket/-/k-bucket-5.1.0.tgz#db2c9e72bd168b432e3f3e8fc092e2ccb61bff89"
   integrity sha512-Fac7iINEovXIWU20GPnOMLUbjctiS+cnmyjC4zAUgvs3XPf1vo9akfCHkigftSic/jiKqKl+KA3a/vFcJbHyCg==
@@ -2143,7 +2143,7 @@ k-rpc-socket@^1.7.2:
     chrome-dns "^1.0.0"
     chrome-net "^3.3.2"
 
-k-rpc@^5.0.0:
+k-rpc@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/k-rpc/-/k-rpc-5.1.0.tgz#af2052de2e84994d55da3032175da5dad8640174"
   integrity sha512-FGc+n70Hcjoa/X2JTwP+jMIOpBz+pkRffHnSl9yrYiwUxg3FIgD50+u1ePfJUOnRCnx6pbjmVk5aAeB1wIijuQ==
@@ -2902,7 +2902,7 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-record-cache@^1.0.2:
+record-cache@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/record-cache/-/record-cache-1.2.0.tgz#e601bc4f164d58330cc00055e27aa4682291c882"
   integrity sha512-kyy3HWCez2WrotaL3O4fTn0rsIdfRKOdQQcEJ9KpvmKmbffKVvwsloX063EgRUlpJIXHiDQFhJcTbZequ2uTZw==
@@ -3389,12 +3389,12 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-torrent-discovery@^9.4.13:
-  version "9.4.13"
-  resolved "https://registry.yarnpkg.com/torrent-discovery/-/torrent-discovery-9.4.13.tgz#84136382864667fa183459255ec46fc84f080743"
-  integrity sha512-HZD8nAxIejcGnzUyXRMhBnK0rYQCQ85vaaCzmzl2r3/vmj0M/b6JuO6yNhe1vyLOU3ZngzDYaHxCJjmAIa4wwg==
+torrent-discovery@^9.4.14:
+  version "9.4.14"
+  resolved "https://registry.yarnpkg.com/torrent-discovery/-/torrent-discovery-9.4.14.tgz#fe6d41469d1b46135e0a903ac351706bfcba800d"
+  integrity sha512-IyzlrHctvqqKtN8Y2BMxNL3d2FLazs6pC2yzKOHJlXWYUFkLpZhZSaSZcAkfmZXgdjwq59N2umr1przsRDMzkA==
   dependencies:
-    bittorrent-dht "^10.0.4"
+    bittorrent-dht "^10.0.6"
     bittorrent-lsd "^1.1.1"
     bittorrent-tracker "^9.19.0"
     debug "^4.3.4"
@@ -3527,15 +3527,15 @@ weak-lru-cache@^1.2.2:
   resolved "https://registry.yarnpkg.com/weak-lru-cache/-/weak-lru-cache-1.2.2.tgz#fdbb6741f36bae9540d12f480ce8254060dccd19"
   integrity sha512-DEAoo25RfSYMuTGc9vPJzZcZullwIqRDSI9LOy+fkCJPi6hykCnfKaXTuPBDuXAUcqHXyOgFtHNp/kB2FjYHbw==
 
-webtorrent@^1.8.30:
-  version "1.8.30"
-  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.8.30.tgz#60d96102070875092fce97c53ec1750d28808c4c"
-  integrity sha512-vJbZYnmzSRwvHAXP6YGPsps69vux6ft6J6B0sFqGyqmIN28g5xK3z4Dvq0EZHRYz1z9egkvzY1Khs6XWlmGJCA==
+webtorrent@^1.8.32:
+  version "1.8.32"
+  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.8.32.tgz#6411bcf39e76cbab98e4aac8464fdc13605cb546"
+  integrity sha512-PjtJn3sY4Uqb1PEuxID+Cps4AshUKZpo3EhkT14y1SySmMVHeSX2crwh1rXIGX3fJUeF0zM5iEg+Ic2mN4CFZw==
   dependencies:
     "@webtorrent/http-node" "^1.3.0"
     addr-to-ip-port "^1.5.4"
     bitfield "^4.1.0"
-    bittorrent-dht "^10.0.4"
+    bittorrent-dht "^10.0.6"
     bittorrent-protocol "^3.5.5"
     cache-chunk-store "^3.2.2"
     chrome-net "^3.3.4"
@@ -3571,7 +3571,7 @@ webtorrent@^1.8.30:
     stream-with-known-length-to-buffer "^1.0.4"
     streamx "^2.12.4"
     throughput "^1.0.1"
-    torrent-discovery "^9.4.13"
+    torrent-discovery "^9.4.14"
     torrent-piece "^2.0.1"
     unordered-array-remove "^1.0.2"
     ut_metadata "^3.5.2"
