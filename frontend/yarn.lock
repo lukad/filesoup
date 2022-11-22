@@ -3499,10 +3499,10 @@ weak-lru-cache@^1.2.2:
   resolved "https://registry.yarnpkg.com/weak-lru-cache/-/weak-lru-cache-1.2.2.tgz#fdbb6741f36bae9540d12f480ce8254060dccd19"
   integrity sha512-DEAoo25RfSYMuTGc9vPJzZcZullwIqRDSI9LOy+fkCJPi6hykCnfKaXTuPBDuXAUcqHXyOgFtHNp/kB2FjYHbw==
 
-webtorrent@^1.9.2:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.9.2.tgz#0d5cbaafe5161826d760bb2602adcfc08c6d79a6"
-  integrity sha512-+ZnUJGBVQWtZUdejGLZho9q7GLi/lo82zf4H3FeQqxzZBL3HOFfBW7BnofLaww1oYTTKVE42nmeBJksibvSUlQ==
+webtorrent@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-1.9.4.tgz#fb6facde4d86f67d0872f879307d0684b74a08af"
+  integrity sha512-dW/7Cj/fRiJe97Vac071VhbfbiDSF6iAW1wwbs47uArOBbRSAgDRTem70M7ONF3IwRC/mu1+bTSwv+ojxJ+2/A==
   dependencies:
     "@webtorrent/http-node" "^1.3.0"
     addr-to-ip-port "^1.5.4"
