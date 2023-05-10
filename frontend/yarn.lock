@@ -1283,10 +1283,10 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-torrent@^6.0.10:
-  version "6.0.10"
-  resolved "https://registry.yarnpkg.com/create-torrent/-/create-torrent-6.0.10.tgz#b9fe688e5dc61674aeb3bd07efae3b97570956aa"
-  integrity sha512-EH2TCEJLGXBIH1AuJe1Oc7xnduGPkPnj/yahndsxAgQCWfl8oWjnpHTR/UPGH5jjEycB3ndv85qqk1KwPYGXqQ==
+create-torrent@^6.0.11:
+  version "6.0.11"
+  resolved "https://registry.yarnpkg.com/create-torrent/-/create-torrent-6.0.11.tgz#304842e61d9cdb671db9ec74f385de34860d1437"
+  integrity sha512-ZOme7/NFFS0b9IJRS6NkCz2BiUKjwnDPXBoxWpWjakQjzOcmBsYBlkJ7IxrfyFFpVmUK9Sew/d1ozETaye7xmw==
   dependencies:
     bencode "^3.0.3"
     block-iterator "^1.1.1"
@@ -1294,12 +1294,12 @@ create-torrent@^6.0.10:
     is-file "^1.0.0"
     join-async-iterator "^1.1.1"
     junk "^3.1.0"
-    minimist "^1.2.7"
+    minimist "^1.2.8"
     once "^1.4.0"
     piece-length "^2.0.1"
     queue-microtask "^1.2.3"
     run-parallel "^1.2.0"
-    uint8-util "^2.1.7"
+    uint8-util "^2.1.9"
 
 cross-fetch-ponyfill@^1.0.1, cross-fetch-ponyfill@^1.0.3:
   version "1.0.3"
@@ -2234,14 +2234,14 @@ lt_donthave@^1.0.1:
     debug "^4.2.0"
     unordered-array-remove "^1.0.2"
 
-magnet-uri@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/magnet-uri/-/magnet-uri-7.0.2.tgz#f33e2355461118b418ca322f927dcc999499c922"
-  integrity sha512-qDqRs5fjwoTCmdhuDEKaaeBPetF1ayFUBo77b2Y0h1+J7z5xTiulve1osysZg7D+h73SJSXsSp9XM5W2asGTGQ==
+magnet-uri@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/magnet-uri/-/magnet-uri-7.0.3.tgz#2bb8fa03f6d912cd01a32050cf18e6d94daa874b"
+  integrity sha512-Msv4fAroG2x1REbYw7G3FQHUtlGrscNTQuI9CkWGw0y0m/7CgxpXz0EjmQKYKrrLcQrvZXVEUG1phsJhHJbbzA==
   dependencies:
     bep53-range "^2.0.0"
     thirty-two "^1.0.2"
-    uint8-util "^2.1.7"
+    uint8-util "^2.1.9"
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -2322,10 +2322,10 @@ minimist@^1.2.5, minimist@^1.2.6:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
   integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
-minimist@^1.2.7:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
-  integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
+minimist@^1.2.8:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
+  integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
 ms@2.1.2:
   version "2.1.2"
@@ -2546,15 +2546,15 @@ parse-json@^5.0.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
-parse-torrent@^11.0.7:
-  version "11.0.7"
-  resolved "https://registry.yarnpkg.com/parse-torrent/-/parse-torrent-11.0.7.tgz#033e39bed071cdf39465d3aba4b50995613b38aa"
-  integrity sha512-ZolvE7Xjs5qk9oxBQEZSaV69ZYTTKIKCjJeqZJkugkhcZPwuQmFAiaCF8Rd9R4ep2R1Mvg2L1VEIn7IEYRAiuQ==
+parse-torrent@^11.0.8:
+  version "11.0.8"
+  resolved "https://registry.yarnpkg.com/parse-torrent/-/parse-torrent-11.0.8.tgz#3fada95b88a574b8e9d2ac47ddadae910f2cf359"
+  integrity sha512-sBGn5toOiwCrqlCeM1MzWsdx/NGvCkgDDhf/qpb9LxNn0D1u/qvVCkI432GN5DueA3ojcmUwMD2Y6TU3bZ60Ug==
   dependencies:
     bencode "^3.0.3"
     cross-fetch-ponyfill "^1.0.3"
     get-stdin "^9.0.0"
-    magnet-uri "^7.0.2"
+    magnet-uri "^7.0.3"
     queue-microtask "^1.2.3"
     uint8-util "^2.1.7"
 
@@ -3436,10 +3436,10 @@ web-streams-polyfill@^3.0.3:
   resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz#71c2718c52b45fd49dbeee88634b3a60ceab42a6"
   integrity sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==
 
-webtorrent@^2.0.14:
-  version "2.0.14"
-  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-2.0.14.tgz#a8c0eb73bac66e60ea2c4c8e42d44c742913fd62"
-  integrity sha512-KSW458QKGruGtQpKNVRBaMPtRr9fHzYXZopT15U1yAcyTA3rRpIyiOsNFnt/vOO4i7MMosWlo2iD1tPB0xsOLQ==
+webtorrent@^2.0.18:
+  version "2.0.18"
+  resolved "https://registry.yarnpkg.com/webtorrent/-/webtorrent-2.0.18.tgz#284814bb612f23980db05c17b902e6e4af9ce074"
+  integrity sha512-gxQ88qH2VnP9Sc4nOx5cKXrG/iiK3ylpcMyLOqruPbdGb3NkqwCGNDA4wWMrjVBaQKYs7SS4VhaWKpj4euonDg==
   dependencies:
     "@webtorrent/http-node" "^1.3.0"
     addr-to-ip-port "^2.0.0"
@@ -3449,7 +3449,7 @@ webtorrent@^2.0.14:
     cache-chunk-store "^3.2.2"
     chunk-store-iterator "^1.0.3"
     cpus "^1.0.3"
-    create-torrent "^6.0.10"
+    create-torrent "^6.0.11"
     cross-fetch-ponyfill "^1.0.3"
     debug "^4.3.4"
     escape-html "^1.0.3"
@@ -3462,7 +3462,7 @@ webtorrent@^2.0.14:
     memory-chunk-store "^1.3.5"
     mime "^3.0.0"
     once "^1.4.0"
-    parse-torrent "^11.0.7"
+    parse-torrent "^11.0.8"
     pump "^3.0.0"
     queue-microtask "^1.2.3"
     random-iterate "^1.0.1"
