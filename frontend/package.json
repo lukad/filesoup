@@ -34,7 +34,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rescript-heroicons": "^0.0.3",
-    "rescript-webapi": "^0.7.0",
+    "rescript-webapi": "^0.8.0",
     "webtorrent": "^2.0.18"
   }
 }
