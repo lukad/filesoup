@@ -2890,10 +2890,10 @@ rescript-heroicons@^0.0.3:
   resolved "https://registry.yarnpkg.com/rescript-heroicons/-/rescript-heroicons-0.0.3.tgz#ea41f0d0e62c3c6dfae1e3ca6f2c35947175106b"
   integrity sha512-sPiNPtVTqJqAZpgmuxCgzonb1GPgmPZzecaaziNwIAIone4wYE69I4uRrktcsbE6MSmFyxTCSnoIYPHGVLTrsw==
 
-rescript-webapi@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/rescript-webapi/-/rescript-webapi-0.7.0.tgz#f8c61bf7383c82b6fe180ad045e16cb43b6299c0"
-  integrity sha512-fA1LPXSmQY3HtcIStQ2sHu9Xye1XLxd4JvkGQMupux9Q6Tp/jbcdh7bnCaGwHW6aI1QFmTmA/xWxUMb6oPphsQ==
+rescript-webapi@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/rescript-webapi/-/rescript-webapi-0.9.0.tgz#6445380bff048a873c3350a95a4434ef0bfb61cf"
+  integrity sha512-Q6I0OqaboCT2Z9VMXYM6pjzYKJani8NEiD6e9TFzRqb2nPjO2I0p4FG/8ZkYRr2JZlgTF/VsMQGuQ7+buHAbDg==
 
 rescript@^10.1.4:
   version "10.1.4"
