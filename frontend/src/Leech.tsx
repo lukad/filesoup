@@ -84,17 +84,25 @@ function Leech() {
 
   createEffect(() => {
     setState({ type: "loading" });
-    let request = new XMLHttpRequest();
-    request.open("GET", `/files/${params.id}`);
-    request.send("");
-    request.addEventListener("load", () => {
-      if (request.status === 200) {
-        let response = JSON.parse(request.response);
-        setMagnetUri(response.magnetUri);
-      } else if (request.status === 404) {
-        setState({ type: "not_found" });
-      }
-    });
+    fetch(`/files/${params.id}`)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else if (res.status === 404) {
+          setState({ type: "not_found" });
+          throw new Error("File not found");
+        }
+        throw new Error(`Unexpected status: ${res.status}`);
+      })
+      .then((data) => {
+        setMagnetUri(data.magnetUri);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch file info:", error);
+        if (state().type === "loading") {
+          setState({ type: "not_found" });
+        }
+      });
   });
 
   createEffect(() => {
