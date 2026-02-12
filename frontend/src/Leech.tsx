@@ -1,7 +1,8 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 import useWebTorrent from "./hooks/useWebTorrent";
 import { useParams } from "@solidjs/router";
 import ProgressBar from "./ProgressBar";
+import Spinner from "./Spinner";
 
 function downloadBlobUrl(name: string, blobUrl: string) {
   let a = document.createElement("a");
@@ -15,7 +16,10 @@ function downloadBlobUrl(name: string, blobUrl: string) {
   }
 }
 
-function formatBytes(bytes: number, suffix = "") {
+function formatBytes(bytes: number | undefined, suffix = "") {
+  if (bytes === undefined || bytes === null || isNaN(bytes)) {
+    return "--";
+  }
   let num = bytes;
   let unit = "B";
   if (bytes < 1e6) {
@@ -32,18 +36,28 @@ function formatBytes(bytes: number, suffix = "") {
   return `${num.toFixed(2)} ${unit}${suffix}`;
 }
 
+function formatTime(seconds: number): string {
+  if (seconds < 60) return `${Math.round(seconds)}s`;
+  if (seconds < 3600) return `${Math.round(seconds / 60)}m`;
+  return `${Math.round(seconds / 3600)}h`;
+}
+
 type Leeching = {
   type: "leeching";
   downloadSpeed: number;
+  uploadSpeed: number;
   received: number;
   progress: number;
+  peers: number;
+  length: number;
+  fileName: string;
 };
 
 type State =
   | Leeching
   | { type: "loading" }
   | { type: "not_found" }
-  | { type: "done" };
+  | { type: "done"; fileName: string };
 
 function Leech() {
   const params = useParams();
@@ -80,13 +94,17 @@ function Leech() {
         setState({
           type: "leeching",
           downloadSpeed: torrent.downloadSpeed,
+          uploadSpeed: torrent.uploadSpeed,
           received: torrent.received,
           progress: torrent.progress,
+          peers: torrent.numPeers,
+          length: torrent.length,
+          fileName: torrent.name,
         });
       });
       torrent.on("done", () => {
         torrent.files[0].blob().then((blob) => {
-          setState({ type: "done" });
+          setState({ type: "done", fileName: torrent.name });
           const blobUrl = URL.createObjectURL(blob);
           downloadBlobUrl(torrent.name, blobUrl);
         });
@@ -94,27 +112,204 @@ function Leech() {
     }
   });
 
+  const calculateETA = () => {
+    const s = state();
+    if (s.type !== "leeching") return null;
+    if (s.downloadSpeed === 0) return null;
+    const remaining = s.length - s.received;
+    return remaining / s.downloadSpeed;
+  };
+
+  const getFileIcon = () => {
+    // File type icons could be expanded here
+    return (
+      <svg
+        class="w-12 h-12 text-white/80"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        />
+      </svg>
+    );
+  };
+
   return (
-    <div class="p-2 sm:p-4 w-96 max-w-full h-96 max-h-full flex flex-col justify-center items-center">
-      {(() => {
-        const s = state();
-        switch (s.type) {
-          case "loading":
-            return <span>Loading</span>;
-          case "leeching":
-            return (
-              <ProgressBar
-                label="Downloading"
-                detail={formatBytes(s.downloadSpeed, "/s")}
-                progress={s.progress}
+    <div class="w-full min-h-screen flex flex-col">
+      {/* Header */}
+      <header class="py-6 px-4 text-center animate-slide-up">
+        <div class="flex items-center justify-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <svg
+              class="w-7 h-7 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
               />
-            );
-          case "not_found":
-            return <span>Not Found</span>;
-          case "done":
-            return <span>Done</span>;
-        }
-      })()}
+            </svg>
+          </div>
+          <div class="text-left">
+            <h1 class="text-2xl font-bold gradient-text">FileSoup</h1>
+            <p class="text-white/50 text-sm">P2P File Sharing</p>
+          </div>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <main class="flex-1 flex items-center justify-center p-4">
+        <div class="w-full max-w-xl">
+          {/* Loading state */}
+          <Show when={state().type === "loading"}>
+            <div class="flex flex-col items-center gap-4">
+              <Spinner size="lg" message="Connecting to peers..." />
+            </div>
+          </Show>
+
+          {/* Not found state */}
+          <Show when={state().type === "not_found"}>
+            <div class="glass-card p-8 text-center animate-scale-in">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-red-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold text-white mb-2">File Not Found</h2>
+              <p class="text-white/60">
+                This file may have expired or the link is incorrect.
+              </p>
+            </div>
+          </Show>
+
+          {/* Downloading state */}
+          <Show when={state().type === "leeching"}>
+            <div class="glass-card p-8 animate-scale-in">
+              {(() => {
+                const s = state();
+                if (s.type !== "leeching") return null;
+                return (
+                  <>
+                    {/* File info header */}
+                    <div class="flex items-center gap-4 mb-6">
+                      <div class="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                        {getFileIcon()}
+                      </div>
+                      <div class="min-w-0 flex-1">
+                        <h2 class="text-lg font-semibold text-white truncate">
+                          {s.fileName}
+                        </h2>
+                        <p class="text-white/50 text-sm">
+                          {formatBytes(s.length)}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Progress bar */}
+                    <ProgressBar
+                      label="Downloading"
+                      detail={`${formatBytes(s.downloadSpeed, "/s")}`}
+                      progress={s.progress}
+                      showPeers={true}
+                      peers={s.peers}
+                    />
+
+                    {/* Stats grid */}
+                    <div class="grid grid-cols-3 gap-4 mt-6">
+                      <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                        <p class="text-white/50 text-xs mb-1">Downloaded</p>
+                        <p class="text-white font-semibold">
+                          {formatBytes(s.received)}
+                        </p>
+                      </div>
+                      <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                        <p class="text-white/50 text-xs mb-1">Speed</p>
+                        <p class="text-cyan-400 font-semibold">
+                          {formatBytes(s.downloadSpeed, "/s")}
+                        </p>
+                      </div>
+                      <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                        <p class="text-white/50 text-xs mb-1">ETA</p>
+                        <p class="text-white font-semibold">
+                          {calculateETA() ? formatTime(calculateETA()!) : "--"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Upload info */}
+                    <div class="mt-6 pt-6 border-t border-white/10 flex items-center justify-between text-sm">
+                      <span class="text-white/50">Uploading</span>
+                      <span class="text-green-400 font-medium">
+                        {formatBytes(s.uploadSpeed, "/s")}
+                      </span>
+                    </div>
+                  </>
+                );
+              })()}
+            </div>
+          </Show>
+
+          {/* Done state */}
+          <Show when={state().type === "done"}>
+            <div class="glass-card p-8 text-center animate-scale-in">
+              {(() => {
+                const s = state();
+                if (s.type !== "done") return null;
+                return (
+                  <>
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-green-400/20 to-cyan-400/20 border border-white/20 flex items-center justify-center">
+                      <svg
+                        class="w-10 h-10 text-green-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">
+                      Download Complete!
+                    </h2>
+                    <p class="text-white/60 mb-6">{s.fileName}</p>
+                    <p class="text-white/40 text-sm">
+                      Your file has been saved to your downloads folder
+                    </p>
+                  </>
+                );
+              })()}
+            </div>
+          </Show>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer class="py-4 px-4 text-center text-white/30 text-sm">
+        <p>Powered by WebTorrent • No servers, just P2P</p>
+      </footer>
     </div>
   );
 }
