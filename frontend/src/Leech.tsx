@@ -45,7 +45,6 @@ function formatTime(seconds: number): string {
 type Leeching = {
   type: "leeching";
   downloadSpeed: number;
-  uploadSpeed: number;
   received: number;
   progress: number;
   peers: number;
@@ -94,7 +93,6 @@ function Leech() {
         setState({
           type: "leeching",
           downloadSpeed: torrent.downloadSpeed,
-          uploadSpeed: torrent.uploadSpeed,
           received: torrent.received,
           progress: torrent.progress,
           peers: torrent.numPeers,
@@ -253,14 +251,6 @@ function Leech() {
                           {calculateETA() ? formatTime(calculateETA()!) : "--"}
                         </p>
                       </div>
-                    </div>
-
-                    {/* Upload info */}
-                    <div class="mt-6 pt-6 border-t border-white/10 flex items-center justify-between text-sm">
-                      <span class="text-white/50">Uploading</span>
-                      <span class="text-green-400 font-medium">
-                        {formatBytes(s.uploadSpeed, "/s")}
-                      </span>
                     </div>
                   </>
                 );
