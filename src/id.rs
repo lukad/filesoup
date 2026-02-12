@@ -99,8 +99,12 @@ const INGREDIENTS: [&str; 94] = [
 
 pub fn id(length: usize, separator: &str) -> String {
     let mut rng = thread_rng();
-    (0..length)
-        .map(|_| INGREDIENTS.choose(&mut rng).unwrap().to_string())
-        .collect::<Vec<String>>()
+    let mut ingredients = INGREDIENTS.to_vec();
+    ingredients.shuffle(&mut rng);
+    ingredients
+        .iter()
+        .take(length)
+        .map(|s| s.to_string())
+        .collect::<Vec<_>>()
         .join(separator)
 }
