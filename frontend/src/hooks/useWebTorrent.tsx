@@ -8,9 +8,11 @@ const useWebTorrent = () => {
 
   const [state, setState] = createSignal<TorrentStatus>("idle");
   const [torrentId, setTorrentId] = createSignal<string>("");
+  const [error, setError] = createSignal<string | null>(null);
 
   const seedFiles = (files: FileList) => {
     setState("processing");
+    setError(null);
 
     client.seed(files, {}, (torrent) => {
       const magnetUri = torrent.magnetURI;
@@ -22,13 +24,20 @@ const useWebTorrent = () => {
         },
         body: JSON.stringify({ magnetUri }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Server responded with ${res.status}`);
+          }
+          return res.json();
+        })
         .then((data) => {
           setTorrentId(data.id);
           setState("seeding");
         })
         .catch((error) => {
           console.error(error);
+          setError("Failed to create shareable link. Please try again.");
+          setState("idle");
         });
     });
   };
@@ -37,9 +46,11 @@ const useWebTorrent = () => {
     return client.add(magnetUri);
   };
 
+  const clearError = () => setError(null);
+
   onCleanup(() => client.destroy());
 
-  return { state, torrentId, seedFiles, addMagnetURI };
+  return { state, torrentId, seedFiles, addMagnetURI, error, clearError };
 };
 
 export default useWebTorrent;
