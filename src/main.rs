@@ -4,13 +4,7 @@ extern crate rocket;
 mod id;
 
 use std::{
-    borrow::Cow,
-    collections::HashMap,
-    env,
-    ffi::OsStr,
-    path::PathBuf,
-    sync::{Arc, Mutex},
-    time::Duration,
+    borrow::Cow, collections::HashMap, env, ffi::OsStr, path::PathBuf, sync::Arc, time::Duration,
 };
 
 use rocket::{
@@ -20,6 +14,7 @@ use rocket::{
     shield::{ExpectCt, Hsts, Shield},
     tokio::{
         self,
+        sync::Mutex,
         time::{self, Instant},
     },
     Build, Response, Rocket, State,
@@ -57,15 +52,15 @@ struct NewFile<'r> {
 }
 
 #[get("/files/<id>")]
-fn get_file(files: &State<Files>, id: &str) -> Option<Json<File>> {
-    files.lock().expect("msg").get_mut(id).map(|file| {
+async fn get_file(files: &State<Files>, id: &str) -> Option<Json<File>> {
+    files.lock().await.get_mut(id).map(|file| {
         file.last_accessed = Some(Instant::now());
         Json(file.clone())
     })
 }
 
 #[post("/files", format = "json", data = "<new_file>")]
-fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Json<File> {
+async fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Json<File> {
     let file = File {
         id: id::id(5, "-"),
         magnet_uri: new_file.magnet_uri.to_string(),
@@ -73,8 +68,7 @@ fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Json<File> {
         last_accessed: None,
     };
     let json = Json(file.clone());
-    let mut files = files.lock().unwrap();
-    files.insert(file.id.clone(), file);
+    files.lock().await.insert(file.id.clone(), file);
     json
 }
 
@@ -125,7 +119,7 @@ async fn rocket() -> _ {
         let max_age = Duration::from_secs(60 * 10);
         loop {
             interval.tick().await;
-            let mut files = files_clone.lock().unwrap();
+            let mut files = files_clone.lock().await;
             let now = Instant::now();
             files.retain(|_id, file| {
                 let instant = file.last_accessed.unwrap_or(file.inserted_at);
