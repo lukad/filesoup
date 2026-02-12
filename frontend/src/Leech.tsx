@@ -1,4 +1,4 @@
-import { createEffect, createSignal, Show } from "solid-js";
+import { createEffect, createSignal, Show, onCleanup } from "solid-js";
 import useWebTorrent from "./hooks/useWebTorrent";
 import { useParams } from "@solidjs/router";
 import ProgressBar from "./ProgressBar";
@@ -71,6 +71,16 @@ function Leech() {
   } = useWebTorrent();
   const [state, setState] = createSignal<State>({ type: "loading" });
   const [magnetUri, setMagnetUri] = createSignal<string | null>(null);
+  const [blobUrl, setBlobUrl] = createSignal<string | null>(null);
+  const [torrentAdded, setTorrentAdded] = createSignal(false);
+
+  // Clean up blob URL on component unmount
+  onCleanup(() => {
+    const url = blobUrl();
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
+  });
 
   createEffect(() => {
     setState({ type: "loading" });
@@ -89,8 +99,10 @@ function Leech() {
 
   createEffect(() => {
     const magnet = magnetUri();
-    if (magnet) {
-      let torrent = addMagnetURI(magnet);
+    if (magnet && !torrentAdded()) {
+      setTorrentAdded(true);
+      const torrent = addMagnetURI(magnet);
+
       torrent.on("download", () => {
         if (state().type === "done") return;
         setState({
@@ -106,8 +118,11 @@ function Leech() {
       torrent.on("done", () => {
         torrent.files[0].blob().then((blob) => {
           setState({ type: "done", fileName: torrent.name });
-          const blobUrl = URL.createObjectURL(blob);
-          downloadBlobUrl(torrent.name, blobUrl);
+          const url = URL.createObjectURL(blob);
+          setBlobUrl(url);
+          downloadBlobUrl(torrent.name, url);
+          // Revoke blob URL after download is triggered
+          setTimeout(() => URL.revokeObjectURL(url), 100);
         });
       });
     }
