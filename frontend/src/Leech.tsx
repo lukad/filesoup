@@ -3,6 +3,8 @@ import useWebTorrent from "./hooks/useWebTorrent";
 import { useParams } from "@solidjs/router";
 import ProgressBar from "./ProgressBar";
 import Spinner from "./Spinner";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function downloadBlobUrl(name: string, blobUrl: string) {
   let a = document.createElement("a");
@@ -140,30 +142,7 @@ function Leech() {
 
   return (
     <div class="w-full min-h-screen flex flex-col">
-      {/* Header */}
-      <header class="py-6 px-4 text-center animate-slide-up">
-        <div class="flex items-center justify-center gap-3">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-            <svg
-              class="w-7 h-7 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-              />
-            </svg>
-          </div>
-          <div class="text-left">
-            <h1 class="text-2xl font-bold gradient-text">FileSoup</h1>
-            <p class="text-white/50 text-sm">P2P File Sharing</p>
-          </div>
-        </div>
-      </header>
+      <Header icon="leech" />
 
       {/* Main content */}
       <main class="flex-1 flex items-center justify-center p-4">
@@ -297,10 +276,7 @@ function Leech() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer class="py-4 px-4 text-center text-white/30 text-sm">
-        <p>Powered by WebTorrent • No servers, just P2P</p>
-      </footer>
+      <Footer />
     </div>
   );
 }
