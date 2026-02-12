@@ -115,7 +115,8 @@ impl ConditionalAttach for Rocket<Build> {
 }
 
 #[launch]
-fn rocket() -> _ {
+#[tokio::main]
+async fn rocket() -> _ {
     let files = Files::default();
     let files_clone = files.clone();
 
