@@ -34,12 +34,14 @@ function CopyToClipboard(props: CopyToClipboardProps) {
   return (
     <div class="flex flex-col items-center gap-6 animate-scale-in max-w-2xl w-full px-4">
       {/* Success message */}
-      {copied() && (
-        <div class="flex items-center gap-2 text-green-400 animate-slide-up">
-          <Icon path={check} class="w-5 h-5" />
-          <span class="font-medium">Ready to share!</span>
-        </div>
-      )}
+      <div
+        class={`flex items-center gap-2 text-green-400 transition-all duration-300 ${
+          copied() ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <Icon path={check} class="w-5 h-5" />
+        <span class="font-medium">Ready to share!</span>
+      </div>
 
       {/* Main card */}
       <div class="glass-card p-8 w-full">
