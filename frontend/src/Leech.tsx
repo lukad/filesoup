@@ -90,6 +90,7 @@ function Leech() {
     if (magnet) {
       let torrent = addMagnetURI(magnet);
       torrent.on("download", () => {
+        if (state().type === "done") return;
         setState({
           type: "leeching",
           downloadSpeed: torrent.downloadSpeed,
