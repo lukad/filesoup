@@ -1,14 +1,14 @@
-FROM node:lts as frontend
+FROM node:lts-slim as frontend
+
+RUN corepack enable
 
 WORKDIR /frontend
 
-COPY frontend/package.json frontend/yarn.lock ./
-
-RUN yarn
+COPY frontend/package.json frontend/pnpm-lock.yaml ./
+RUN pnpm install
 
 COPY frontend ./
-
-RUN yarn build
+RUN pnpm run build
 
 FROM rust:latest as backend
 
