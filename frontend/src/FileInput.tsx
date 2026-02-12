@@ -115,18 +115,18 @@ function FileInput(props: FileInputProps) {
       <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
         <div class="glass-card p-4">
           <div class="text-2xl mb-2">⚡</div>
-          <div class="text-sm font-medium text-white">Lightning Fast</div>
-          <div class="text-xs text-white/50">P2P transfer</div>
+          <div class="text-sm font-medium text-white">Instant</div>
+          <div class="text-xs text-white/50">No waiting, just share</div>
         </div>
         <div class="glass-card p-4">
           <div class="text-2xl mb-2">🔒</div>
-          <div class="text-sm font-medium text-white">Secure</div>
-          <div class="text-xs text-white/50">End-to-end encrypted</div>
+          <div class="text-sm font-medium text-white">Private</div>
+          <div class="text-xs text-white/50">Your files never touch a server</div>
         </div>
         <div class="glass-card p-4">
           <div class="text-2xl mb-2">∞</div>
-          <div class="text-sm font-medium text-white">Unlimited</div>
-          <div class="text-xs text-white/50">No file size limits</div>
+          <div class="text-sm font-medium text-white">Simple</div>
+          <div class="text-xs text-white/50">Drag, drop, done</div>
         </div>
       </div>
     </div>
