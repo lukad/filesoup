@@ -22,6 +22,11 @@ use rocket::{
 use rust_embed::RustEmbed;
 use serde::Deserialize;
 
+// Cleanup interval for expired files (runs every 10 seconds)
+const CLEANUP_INTERVAL_SECS: u64 = 10;
+// Maximum time a file is kept before expiration (10 minutes)
+const FILE_MAX_AGE_MINS: u64 = 10;
+
 #[derive(RustEmbed)]
 #[folder = "frontend/dist"]
 struct Assets;
@@ -115,8 +120,8 @@ async fn rocket() -> _ {
     let files_clone = files.clone();
 
     tokio::spawn(async move {
-        let mut interval = time::interval(Duration::from_secs(10));
-        let max_age = Duration::from_secs(60 * 10);
+        let mut interval = time::interval(Duration::from_secs(CLEANUP_INTERVAL_SECS));
+        let max_age = Duration::from_secs(FILE_MAX_AGE_MINS * 60);
         loop {
             interval.tick().await;
             let mut files = files_clone.lock().await;
