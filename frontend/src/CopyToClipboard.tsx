@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { Icon } from "solid-heroicons";
 import { clipboard, check } from "solid-heroicons/outline";
-import { showToast } from "./Toast";
+import { useToast } from "./Toast";
 
 interface CopyToClipboardProps {
   content: string;
@@ -10,6 +10,7 @@ interface CopyToClipboardProps {
 
 function CopyToClipboard(props: CopyToClipboardProps) {
   const [copied, setCopied] = createSignal(false);
+  const { showToast } = useToast();
 
   const copy = async () => {
     try {

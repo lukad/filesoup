@@ -1,4 +1,5 @@
-import { createSignal, onCleanup } from "solid-js";
+import { createContext, createSignal, onCleanup, useContext } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 import {
   checkCircle,
   xCircle,
@@ -37,6 +38,58 @@ const bgColors = {
   error: "border-red-500/30 bg-red-500/10",
   info: "border-cyan-500/30 bg-cyan-500/10",
 };
+
+// Context type
+interface ToastContextType {
+  showToast: (message: string, type?: ToastType, duration?: number) => void;
+}
+
+// Create context
+const ToastContext = createContext<ToastContextType>();
+
+// Provider component
+export function ToastProvider(props: { children: any }) {
+  const [toasts, setToasts] = createStore<ToastItem[]>([]);
+  let nextId = 0;
+
+  const showToast = (
+    message: string,
+    type: ToastType = "info",
+    duration?: number,
+  ) => {
+    const id = nextId++;
+    const toast: ToastItem = {
+      id,
+      props: { message, type, duration, onClose: () => removeToast(id) },
+    };
+    setToasts(produce((toasts) => toasts.push(toast)));
+  };
+
+  const removeToast = (id: number) => {
+    setToasts(produce((toasts) => {
+      const index = toasts.findIndex((t) => t.id === id);
+      if (index !== -1) {
+        toasts.splice(index, 1);
+      }
+    }));
+  };
+
+  return (
+    <ToastContext.Provider value={{ showToast }}>
+      {props.children}
+      <ToastContainer toasts={toasts} />
+    </ToastContext.Provider>
+  );
+}
+
+// Hook to use toast context
+export function useToast() {
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error("useToast must be used within a ToastProvider");
+  }
+  return context;
+}
 
 function Toast(props: ToastProps) {
   const [visible, setVisible] = createSignal(true);
@@ -82,37 +135,10 @@ function Toast(props: ToastProps) {
   );
 }
 
-// Toast manager for showing toasts from anywhere
-let toasts: ToastItem[] = [];
-let setToasts: ((toasts: ToastItem[]) => void) | null = null;
-let nextId = 0;
-
-export function showToast(
-  message: string,
-  type: ToastType = "info",
-  duration?: number,
-) {
-  const id = nextId++;
-  const toast: ToastItem = {
-    id,
-    props: { message, type, duration, onClose: () => removeToast(id) },
-  };
-  toasts = [...toasts, toast];
-  setToasts?.(toasts);
-}
-
-function removeToast(id: number) {
-  toasts = toasts.filter((t) => t.id !== id);
-  setToasts?.(toasts);
-}
-
-export function ToastContainer() {
-  const [toastList, setToastList] = createSignal<ToastItem[]>([]);
-  setToasts = setToastList;
-
+function ToastContainer(props: { toasts: ToastItem[] }) {
   return (
     <div class="fixed top-0 right-0 z-50 p-4 flex flex-col gap-2 pointer-events-none">
-      {toastList().map((toast) => (
+      {props.toasts.map((toast) => (
         <div class="pointer-events-auto">
           <Toast {...toast.props} />
         </div>
