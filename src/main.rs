@@ -39,6 +39,11 @@ fn index() -> Option<(ContentType, Cow<'static, [u8]>)> {
     Some((ContentType::HTML, asset.data))
 }
 
+#[get("/health")]
+fn health() -> Status {
+    Status::Ok
+}
+
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct File {
@@ -169,5 +174,5 @@ async fn rocket() -> _ {
         .manage(files)
         .attach(shield)
         .attach_if(hsts_enabled, redirect_to_https)
-        .mount("/", routes![index, get_file, add_file, assets])
+        .mount("/", routes![index, health, get_file, add_file, assets])
 }
