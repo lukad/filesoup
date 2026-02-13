@@ -8,6 +8,8 @@ use std::{
 };
 
 use rocket::{
+    config::Config,
+    data::{ByteUnit, Limits},
     fairing::{self, Fairing},
     http::{ContentType, Status},
     serde::{json::Json, Serialize},
@@ -172,6 +174,10 @@ async fn rocket() -> _ {
 
     rocket::build()
         .manage(files)
+        .configure(
+            Config::figment()
+                .merge(("limits", Limits::default().limit("json", ByteUnit::Byte(8 * 1024)))),
+        )
         .attach(shield)
         .attach_if(hsts_enabled, redirect_to_https)
         .mount("/", routes![index, health, get_file, add_file, assets])
