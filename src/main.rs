@@ -134,6 +134,8 @@ async fn rocket() -> _ {
     });
 
     let hsts_enabled = env::var("HSTS_ENABLED").is_ok();
+    let default_domain: String = env::var("APP_DOMAIN")
+        .unwrap_or_else(|_| "filesoup.io".to_string());
 
     let mut shield = Shield::default();
     if hsts_enabled {
@@ -142,7 +144,8 @@ async fn rocket() -> _ {
             .enable(ExpectCt::default());
     }
 
-    let redirect_to_https = fairing::AdHoc::on_response("Redirect to https", |req, resp| {
+    let redirect_to_https = fairing::AdHoc::on_response("Redirect to https", move |req, resp| {
+        let domain = default_domain.clone();
         Box::pin(async move {
             if req.headers().get("X-Forwarded-Proto").any(|x| x == "http") {
                 *resp = Response::build()
@@ -153,7 +156,7 @@ async fn rocket() -> _ {
                             "https://{}{}",
                             req.host()
                                 .map(|host| host.to_string())
-                                .unwrap_or_else(|| "filesoup.io".to_string()),
+                                .unwrap_or_else(|| domain),
                             req.uri()
                         ),
                     )
