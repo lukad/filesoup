@@ -63,6 +63,22 @@ struct NewFile<'r> {
     magnet_uri: &'r str,
 }
 
+fn is_valid_magnet_uri(uri: &str) -> bool {
+    // Must start with magnet:
+    if !uri.starts_with("magnet:") {
+        return false;
+    }
+    // Must contain xt parameter (info hash)
+    if !uri.contains("xt=") {
+        return false;
+    }
+    // Basic length check (prevent absurdly long URIs)
+    if uri.len() > 10000 {
+        return false;
+    }
+    true
+}
+
 #[get("/files/<id>")]
 async fn get_file(files: &State<Files>, id: &str) -> Option<Json<File>> {
     files.lock().await.get_mut(id).map(|file| {
@@ -72,7 +88,11 @@ async fn get_file(files: &State<Files>, id: &str) -> Option<Json<File>> {
 }
 
 #[post("/files", format = "json", data = "<new_file>")]
-async fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Json<File> {
+async fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Result<Json<File>, Status> {
+    if !is_valid_magnet_uri(new_file.magnet_uri) {
+        return Err(Status::BadRequest);
+    }
+
     let file = File {
         id: id::id(5, "-"),
         magnet_uri: new_file.magnet_uri.to_string(),
@@ -81,7 +101,7 @@ async fn add_file(files: &State<Files>, new_file: Json<NewFile<'_>>) -> Json<Fil
     };
     let json = Json(file.clone());
     files.lock().await.insert(file.id.clone(), file);
-    json
+    Ok(json)
 }
 
 #[get("/<file..>")]
