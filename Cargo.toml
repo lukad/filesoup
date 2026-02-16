@@ -6,7 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rocket = { version = "0.5", features = ["json"] }
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["set-header", "trace"] }
 serde = { version = "1", features = ["derive"] }
 rust-embed = { version = "6.4.0", features = ["compression"] }
 rand = "0.8.5"
+mime_guess = "2.0"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
