@@ -16,3 +16,6 @@ rand = "0.8.5"
 mime_guess = "2.0"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+real = { version = "0.1.4", features = ["axum"] }
+axum-governor = "1.0.3"
+lazy-limit = "1.0.3"

@@ -10,11 +10,15 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use axum_governor::GovernorLayer;
+use lazy_limit::{init_rate_limiter, RuleConfig};
+use real::RealIpLayer;
 use serde::{Deserialize, Serialize};
 use tokio::{
     sync::Mutex,
     time::{self, Instant},
 };
+use tower::ServiceBuilder;
 use tower_http::trace::{self, TraceLayer};
 use tracing::{info, Level};
 use tracing_subscriber::EnvFilter;
@@ -123,6 +127,18 @@ async fn main() {
         )
         .init();
 
+    {
+        use lazy_limit::Duration;
+        init_rate_limiter!(
+            default: RuleConfig::new(Duration::seconds(1), 5), // 5 req/sec
+            max_memory: Some(64 * 1024 * 1024), // 64MB max memory
+            routes: [
+                ("/files", RuleConfig::new(Duration::minutes(1), 5)), // 5 req/min
+            ]
+        )
+        .await;
+    }
+
     let files = Files::default();
     tokio::spawn(cleanup_old_files(files.clone()));
 
@@ -133,6 +149,11 @@ async fn main() {
         .route("/files", post(add_file))
         .route("/{*path}", get(static_handler))
         .with_state(files)
+        .layer(
+            ServiceBuilder::new()
+                .layer(RealIpLayer::default())
+                .layer(GovernorLayer::default()),
+        )
         .layer(
             TraceLayer::new_for_http()
                 .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
@@ -146,5 +167,10 @@ async fn main() {
 
     info!("Listening on: http://{}", addr);
 
-    axum::serve(listener, app).await.expect("Server error");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .expect("Server error");
 }
