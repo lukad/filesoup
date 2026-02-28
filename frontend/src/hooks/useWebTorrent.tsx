@@ -1,5 +1,6 @@
 import WebTorrent from "webtorrent";
 import { createSignal, onCleanup } from "solid-js";
+import { summarizeFiles, trackEvent } from "../analytics";
 
 export type TorrentStatus = "idle" | "downloading" | "processing" | "seeding";
 
@@ -33,9 +34,13 @@ const useWebTorrent = () => {
         .then((data) => {
           setTorrentId(data.id);
           setState("seeding");
+          trackEvent("share_link_ready", summarizeFiles(files));
         })
         .catch((error) => {
           console.error(error);
+          trackEvent("share_link_failed", {
+            stage: "create_link",
+          });
           setError("Failed to create shareable link. Please try again.");
           setState("idle");
         });

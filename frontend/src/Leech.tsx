@@ -5,6 +5,7 @@ import ProgressBar from "./ProgressBar";
 import Spinner from "./Spinner";
 import Header from "./Header";
 import Footer from "./Footer";
+import { summarizeDownload, trackEvent } from "./analytics";
 
 function downloadBlobUrl(name: string, blobUrl: string) {
   let a = document.createElement("a");
@@ -74,6 +75,10 @@ function Leech() {
   const [magnetUri, setMagnetUri] = createSignal<string | null>(null);
   const [blobUrl, setBlobUrl] = createSignal<string | null>(null);
   const [torrentAdded, setTorrentAdded] = createSignal(false);
+  const [downloadStartedTracked, setDownloadStartedTracked] = createSignal(false);
+  const [downloadCompletedTracked, setDownloadCompletedTracked] = createSignal(false);
+  const [downloadNotFoundTracked, setDownloadNotFoundTracked] = createSignal(false);
+  const [downloadErrorTracked, setDownloadErrorTracked] = createSignal(false);
 
   // Clean up blob URL on component unmount
   onCleanup(() => {
@@ -85,6 +90,12 @@ function Leech() {
 
   createEffect(() => {
     setState({ type: "loading" });
+    setMagnetUri(null);
+    setTorrentAdded(false);
+    setDownloadStartedTracked(false);
+    setDownloadCompletedTracked(false);
+    setDownloadNotFoundTracked(false);
+    setDownloadErrorTracked(false);
     fetch(`/files/${params.id}`)
       .then((res) => {
         if (res.ok) {
@@ -113,6 +124,11 @@ function Leech() {
       const torrent = addMagnetURI(magnet);
 
       torrent.on("download", () => {
+        if (!downloadStartedTracked() && torrent.progress > 0) {
+          trackEvent("download_started", summarizeDownload(torrent.name, torrent.length));
+          setDownloadStartedTracked(true);
+        }
+
         if (state().type === "done") return;
         setState({
           type: "leeching",
@@ -126,6 +142,14 @@ function Leech() {
       });
       torrent.on("done", () => {
         torrent.files[0].blob().then((blob) => {
+          if (!downloadStartedTracked()) {
+            trackEvent("download_started", summarizeDownload(torrent.name, torrent.length));
+            setDownloadStartedTracked(true);
+          }
+          if (!downloadCompletedTracked()) {
+            trackEvent("download_completed", summarizeDownload(torrent.name, torrent.length));
+            setDownloadCompletedTracked(true);
+          }
           setState({ type: "done", fileName: torrent.name });
           const url = URL.createObjectURL(blob);
           setBlobUrl(url);
@@ -134,6 +158,24 @@ function Leech() {
           setTimeout(() => URL.revokeObjectURL(url), 100);
         });
       });
+    }
+  });
+
+  createEffect(() => {
+    const currentState = state();
+
+    if (currentState.type === "error" && !downloadErrorTracked()) {
+      trackEvent("download_lookup_failed", {
+        reason: "request_failed",
+      });
+      setDownloadErrorTracked(true);
+    }
+
+    if (currentState.type === "not_found" && !downloadNotFoundTracked()) {
+      trackEvent("download_lookup_failed", {
+        reason: "not_found",
+      });
+      setDownloadNotFoundTracked(true);
     }
   });
 

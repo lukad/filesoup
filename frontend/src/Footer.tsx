@@ -1,3 +1,5 @@
+import { trackEvent } from "./analytics";
+
 export default function Footer() {
   return (
     <footer class="py-4 px-4 text-center text-white/30 text-sm">
@@ -8,6 +10,7 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           class="hover:text-white/60 transition-colors"
+          onClick={() => trackEvent("github_link_clicked", { location: "footer" })}
         >
           GitHub
         </a>

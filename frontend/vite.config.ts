@@ -18,8 +18,8 @@ export default defineConfig({
       webtorrent: fileURLToPath(
         new URL(
           "./node_modules/webtorrent/dist/webtorrent.min.js",
-          import.meta.url
-        )
+          import.meta.url,
+        ),
       ),
     },
   },

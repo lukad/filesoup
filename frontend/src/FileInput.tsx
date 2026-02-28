@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { cloudArrowUp, document } from "solid-heroicons/outline";
 import { Icon } from "solid-heroicons";
+import { summarizeFiles, trackEvent } from "./analytics";
 
 function formatBytes(bytes: number): string {
   if (bytes < 1e3) return `${bytes} B`;
@@ -22,6 +23,10 @@ function FileInput(props: FileInputProps) {
     const files = (e.target as HTMLInputElement).files;
     if (files && files.length > 0) {
       setSelectedFile(files[0]);
+      trackEvent("files_selected", {
+        source: "browse",
+        ...summarizeFiles(files),
+      });
       props.onFiles(files);
     }
   };
@@ -50,6 +55,10 @@ function FileInput(props: FileInputProps) {
     const files = (e as DragEvent).dataTransfer?.files;
     if (files && files.length > 0) {
       setSelectedFile(files[0]);
+      trackEvent("files_selected", {
+        source: "drop",
+        ...summarizeFiles(files),
+      });
       props.onFiles(files);
     }
   };

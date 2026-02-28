@@ -5,6 +5,7 @@ import Spinner from "./Spinner";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Show, createSignal } from "solid-js";
+import { trackEvent } from "./analytics";
 
 function link(id: string) {
   let host = window.location.host;
@@ -67,6 +68,7 @@ function Seed() {
             <p class="text-white/60 mb-6">{error()}</p>
             <button
               onClick={() => {
+                trackEvent("seed_error_retry");
                 clearError();
                 setFileName("");
               }}

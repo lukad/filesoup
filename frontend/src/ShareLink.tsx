@@ -2,6 +2,7 @@ import { createSignal } from "solid-js";
 import { Icon } from "solid-heroicons";
 import { clipboard, check } from "solid-heroicons/outline";
 import { useToast } from "./Toast";
+import { trackEvent } from "./analytics";
 
 interface CopyToClipboardProps {
   content: string;
@@ -17,6 +18,9 @@ function ShareLink(props: CopyToClipboardProps) {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(props.content);
+      trackEvent("share_link_copied", {
+        has_native_share: canShare,
+      });
       setCopied(true);
       showToast("Link copied to clipboard!", "success");
       setTimeout(() => setCopied(false), 2000);
@@ -35,6 +39,9 @@ function ShareLink(props: CopyToClipboardProps) {
           ? `Download ${props.fileName} with Filesoup`
           : "Download this shared file with Filesoup",
         url: props.content,
+      });
+      trackEvent("share_link_shared", {
+        method: "native_share",
       });
       showToast("Share dialog opened", "success");
     } catch (err) {
