@@ -1,6 +1,6 @@
 import FileInput from "./FileInput";
 import useWebTorrent from "./hooks/useWebTorrent";
-import CopyToClipboard from "./CopyToClipboard";
+import ShareLink from "./ShareLink";
 import Spinner from "./Spinner";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -78,7 +78,7 @@ function Seed() {
         </Show>
 
         <Show when={state() === "seeding"}>
-          <CopyToClipboard content={link(torrentId())} fileName={fileName()} />
+          <ShareLink content={link(torrentId())} fileName={fileName()} />
         </Show>
       </main>
 

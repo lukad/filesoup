@@ -8,9 +8,11 @@ interface CopyToClipboardProps {
   fileName?: string;
 }
 
-function CopyToClipboard(props: CopyToClipboardProps) {
+function ShareLink(props: CopyToClipboardProps) {
   const [copied, setCopied] = createSignal(false);
   const { showToast } = useToast();
+  const canShare =
+    typeof navigator !== "undefined" && typeof navigator.share === "function";
 
   const copy = async () => {
     try {
@@ -23,13 +25,27 @@ function CopyToClipboard(props: CopyToClipboardProps) {
     }
   };
 
-  // Truncate the link for display
-  const displayUrl = () => {
-    const url = props.content;
-    if (url.length > 50) {
-      return url.substring(0, 25) + "..." + url.substring(url.length - 20);
+  const share = async () => {
+    try {
+      await navigator.share({
+        title: props.fileName
+          ? `Download ${props.fileName}`
+          : "Download shared file",
+        text: props.fileName
+          ? `Download ${props.fileName} with Filesoup`
+          : "Download this shared file with Filesoup",
+        url: props.content,
+      });
+      showToast("Share dialog opened", "success");
+    } catch (err) {
+      if (
+        err instanceof DOMException &&
+        (err.name === "AbortError" || err.name === "NotAllowedError")
+      ) {
+        return;
+      }
+      showToast("Failed to share link", "error");
     }
-    return url;
   };
 
   return (
@@ -74,36 +90,61 @@ function CopyToClipboard(props: CopyToClipboardProps) {
 
         {/* Link display */}
         <div class="bg-black/30 rounded-xl p-4 mb-4 border border-white/10">
-          <p class="text-white/80 text-sm font-mono break-all">
-            {displayUrl()}
+          <p class="text-white/80 text-sm font-mono overflow-hidden whitespace-nowrap text-ellipsis">
+            {props.content}
           </p>
         </div>
 
-        {/* Copy button */}
-        <button
-          onClick={copy}
-          class={`w-full flex items-center justify-center gap-3 font-medium px-6 py-4 rounded-xl transition-all duration-300 ${
-            copied()
-              ? "bg-green-500 text-white"
-              : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 active:scale-95"
-          }`}
-        >
-          {copied() ? (
-            <>
-              <Icon path={check} class="w-6 h-6" />
-              Copied!
-            </>
-          ) : (
-            <>
-              <Icon path={clipboard} class="w-6 h-6" />
-              Copy Download Link
-            </>
+        {/* Share actions */}
+        <div class="flex flex-col gap-3 sm:flex-row">
+          {canShare && (
+            <button
+              onClick={share}
+              class="w-full flex items-center justify-center gap-3 font-medium px-6 py-4 rounded-xl transition-all duration-300 bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:scale-105 active:scale-95"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8.684 13.342C8.882 13.12 9 12.827 9 12.5s-.118-.62-.316-.842m0 1.684a3 3 0 10-4.368 0m4.368 0a3 3 0 104.264 4.2m-4.264-4.2l6.632 3.316m0 0a3 3 0 103.42-5.317m-3.42 5.317a3 3 0 010-5.317m0 0l-6.632-3.316"
+                />
+              </svg>
+              Share Link
+            </button>
           )}
-        </button>
+          <button
+            onClick={copy}
+            class={`w-full flex items-center justify-center gap-3 font-medium px-6 py-4 rounded-xl transition-all duration-300 ${
+              copied()
+                ? "bg-green-500 text-white"
+                : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 active:scale-95"
+            }`}
+          >
+            {copied() ? (
+              <>
+                <Icon path={check} class="w-6 h-6" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Icon path={clipboard} class="w-6 h-6" />
+                {canShare ? "Copy Link" : "Copy Download Link"}
+              </>
+            )}
+          </button>
+        </div>
 
         {/* Helper text */}
         <p class="text-center text-white/40 text-sm mt-4">
-          Share this link with anyone to let them download your file
+          {canShare
+            ? "Share directly or copy the link to send it anywhere"
+            : "Share this link with anyone to let them download your file"}
         </p>
       </div>
 
@@ -134,4 +175,4 @@ function CopyToClipboard(props: CopyToClipboardProps) {
   );
 }
 
-export default CopyToClipboard;
+export default ShareLink;
