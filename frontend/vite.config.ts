@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "^/files": {
-        target: "http://localhost:8000",
+        target: "http://localhost:8080",
         changeOrigin: true,
         rewrite: (path: string) => path.replace(/^\/fallback/, ""),
       },
