@@ -1,6 +1,12 @@
-import { createSignal } from "solid-js";
+import { Show, createEffect, createSignal, onCleanup } from "solid-js";
 import { Icon } from "solid-heroicons";
-import { clipboard, check } from "solid-heroicons/outline";
+import {
+  clipboard,
+  check,
+  qrCode,
+  share as shareIcon,
+} from "solid-heroicons/outline";
+import * as QRCode from "qrcode";
 import { useToast } from "./Toast";
 import { trackEvent } from "./analytics";
 
@@ -11,9 +17,48 @@ interface CopyToClipboardProps {
 
 function ShareLink(props: CopyToClipboardProps) {
   const [copied, setCopied] = createSignal(false);
+  const [showQrCode, setShowQrCode] = createSignal(false);
+  const [qrCodeUrl, setQrCodeUrl] = createSignal("");
+  const [qrCodeFailed, setQrCodeFailed] = createSignal(false);
   const { showToast } = useToast();
   const canShare =
     typeof navigator !== "undefined" && typeof navigator.share === "function";
+
+  createEffect(() => {
+    if (!showQrCode()) {
+      return;
+    }
+
+    const content = props.content;
+    let cancelled = false;
+
+    setQrCodeUrl("");
+    setQrCodeFailed(false);
+
+    void QRCode.toDataURL(content, {
+      errorCorrectionLevel: "M",
+      margin: 1,
+      width: 320,
+      color: {
+        dark: "#e2e8f0",
+        light: "#00000000",
+      },
+    })
+      .then((url) => {
+        if (!cancelled) {
+          setQrCodeUrl(url);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setQrCodeFailed(true);
+        }
+      });
+
+    onCleanup(() => {
+      cancelled = true;
+    });
+  });
 
   const copy = async () => {
     try {
@@ -68,7 +113,7 @@ function ShareLink(props: CopyToClipboardProps) {
       </div>
 
       {/* Main card */}
-      <div class="glass-card p-8 w-full">
+      <div class="glass-card p-6 sm:p-8 w-full">
         {/* Header */}
         <div class="text-center mb-6">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-green-400/20 to-cyan-400/20 border border-white/20 mb-4">
@@ -95,11 +140,70 @@ function ShareLink(props: CopyToClipboardProps) {
           )}
         </div>
 
-        {/* Link display */}
-        <div class="bg-black/30 rounded-xl p-4 mb-4 border border-white/10">
-          <p class="text-white/80 text-sm font-mono overflow-hidden whitespace-nowrap text-ellipsis">
-            {props.content}
-          </p>
+        <div class="flex flex-col gap-4 mb-4">
+          <div class="bg-black/30 rounded-xl p-4 border border-white/10">
+            <p class="text-white/50 text-xs uppercase tracking-[0.2em] mb-2">
+              Share link
+            </p>
+            <p class="text-white/80 text-sm font-mono whitespace-normal [overflow-wrap:anywhere]">
+              {props.content}
+            </p>
+            <div class="mt-4 border-t border-white/10 pt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <button
+                type="button"
+                onClick={copy}
+                class={`w-full md:w-auto md:min-w-[154px] md:shrink-0 flex items-center justify-center gap-3 font-medium px-4 py-3 rounded-xl transition-all duration-300 ${
+                  copied()
+                    ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/25"
+                    : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40"
+                }`}
+              >
+                {copied() ? (
+                  <>
+                    <Icon path={check} class="w-5 h-5" />
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <Icon path={clipboard} class="w-5 h-5" />
+                    Copy Link
+                  </>
+                )}
+              </button>
+              <p class="text-white/40 text-sm md:max-w-md">
+                Copy the link if you want to paste it into chat, email, or
+                messages.
+              </p>
+            </div>
+          </div>
+
+          <Show when={showQrCode()}>
+            <div class="bg-black/30 rounded-xl border border-white/10 p-4">
+              <div class="mx-auto w-full max-w-[220px] sm:max-w-[260px]">
+                <div class="aspect-square rounded-xl bg-slate-950/80 border border-white/10 flex items-center justify-center overflow-hidden">
+                  <Show
+                    when={qrCodeUrl()}
+                    fallback={
+                      <p class="text-center text-sm text-white/50 px-4">
+                        {qrCodeFailed()
+                          ? "QR code unavailable"
+                          : "Generating QR code..."}
+                      </p>
+                    }
+                  >
+                    <img
+                      src={qrCodeUrl()}
+                      alt="QR code for the share link"
+                      class="h-full w-full object-contain"
+                    />
+                  </Show>
+                </div>
+              </div>
+              <p class="text-center text-white/50 text-xs mt-3">
+                Scan to open on another device
+              </p>
+            </div>
+          </Show>
         </div>
 
         {/* Share actions */}
@@ -109,49 +213,25 @@ function ShareLink(props: CopyToClipboardProps) {
               onClick={share}
               class="w-full flex items-center justify-center gap-3 font-medium px-6 py-4 rounded-xl transition-all duration-300 bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:scale-105 active:scale-95"
             >
-              <svg
-                class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8.684 13.342C8.882 13.12 9 12.827 9 12.5s-.118-.62-.316-.842m0 1.684a3 3 0 10-4.368 0m4.368 0a3 3 0 104.264 4.2m-4.264-4.2l6.632 3.316m0 0a3 3 0 103.42-5.317m-3.42 5.317a3 3 0 010-5.317m0 0l-6.632-3.316"
-                />
-              </svg>
+              <Icon path={shareIcon} class="w-6 h-6" />
               Share Link
             </button>
           )}
           <button
-            onClick={copy}
-            class={`w-full flex items-center justify-center gap-3 font-medium px-6 py-4 rounded-xl transition-all duration-300 ${
-              copied()
-                ? "bg-green-500 text-white"
-                : "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 active:scale-95"
-            }`}
+            type="button"
+            onClick={() => setShowQrCode((visible) => !visible)}
+            class="w-full flex items-center justify-center gap-3 font-medium px-6 py-4 rounded-xl transition-all duration-300 bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:scale-105 active:scale-95"
           >
-            {copied() ? (
-              <>
-                <Icon path={check} class="w-6 h-6" />
-                Copied!
-              </>
-            ) : (
-              <>
-                <Icon path={clipboard} class="w-6 h-6" />
-                {canShare ? "Copy Link" : "Copy Download Link"}
-              </>
-            )}
+            <Icon path={qrCode} class="w-6 h-6" />
+            {showQrCode() ? "Hide QR Code" : "Show QR Code"}
           </button>
         </div>
 
         {/* Helper text */}
         <p class="text-center text-white/40 text-sm mt-4">
           {canShare
-            ? "Share directly or copy the link to send it anywhere"
-            : "Share this link with anyone to let them download your file"}
+            ? "Share directly or open a QR code for another device"
+            : "Open a QR code or copy the link to send it anywhere"}
         </p>
       </div>
 

@@ -64,7 +64,9 @@ function Seed() {
                 />
               </svg>
             </div>
-            <h2 class="text-xl font-semibold text-white mb-2">Something went wrong</h2>
+            <h2 class="text-xl font-semibold text-white mb-2">
+              Something went wrong
+            </h2>
             <p class="text-white/60 mb-6">{error()}</p>
             <button
               onClick={() => {
