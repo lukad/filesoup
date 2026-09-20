@@ -13,7 +13,7 @@ Peer-to-peer file sharing. Drop a file, get a link, share it. The file transfers
 
 You'll need:
 - Rust (1.70+)
-- Node.js 20+ and pnpm
+- Node.js 24+ and pnpm (version pinned in `frontend/package.json`)
 
 ### Backend
 
@@ -27,6 +27,7 @@ Serves on port 8080.
 
 ```bash
 cd frontend
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
@@ -65,7 +66,9 @@ Outputs to `frontend/dist/`.
 
 ## Deployment
 
-Deployed on Fly.io. The `Dockerfile` uses a multi-stage build for a minimal image.
+The `Dockerfile` uses a multi-stage build for a minimal image. Its frontend stage
+uses Node.js 24 and the pinned pnpm version, with a frozen lockfile and the build
+script policy from `frontend/pnpm-workspace.yaml`.
 
 ### Environment Variables
 

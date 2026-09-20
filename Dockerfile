@@ -1,16 +1,16 @@
-FROM node:lts-slim as frontend
+FROM node:24-slim AS frontend
 
 RUN corepack enable
 
 WORKDIR /frontend
 
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
-RUN pnpm install
+COPY frontend/package.json frontend/pnpm-lock.yaml frontend/pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY frontend ./
 RUN pnpm run build
 
-FROM rust:latest as backend
+FROM rust:latest AS backend
 
 RUN rustup target add x86_64-unknown-linux-musl
 
@@ -28,9 +28,9 @@ FROM scratch
 
 COPY --from=backend /filesoup/target/x86_64-unknown-linux-musl/release/filesoup /filesoup
 
-ENV ROCKET_ADDRESS 0.0.0.0
-ENV ROCKET_PORT 8080
-ENV HSTS_ENABLED true
+ENV ROCKET_ADDRESS=0.0.0.0
+ENV ROCKET_PORT=8080
+ENV HSTS_ENABLED=true
 
 EXPOSE ${ROCKET_PORT}
 

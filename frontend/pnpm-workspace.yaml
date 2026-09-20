@@ -1,6 +1,8 @@
-onlyBuiltDependencies:
-  - bufferutil
-  - esbuild
-  - node-datachannel
-  - utf-8-validate
-  - utp-native
+allowBuilds:
+  esbuild: true
+  # Vite uses WebTorrent's prebuilt browser bundle, so its Node.js native
+  # transports and WebSocket accelerators do not need to be compiled.
+  bufferutil: false
+  node-datachannel: false
+  utf-8-validate: false
+  utp-native: false
