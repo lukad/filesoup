@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test"
   },
   "dependencies": {
     "@solidjs/router": "^0.9.1",
@@ -16,6 +17,7 @@
     "webtorrent": "^2.8.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/qrcode": "^1.5.6",
     "@types/webtorrent": "^0.110.1",
     "autoprefixer": "^10.4.16",

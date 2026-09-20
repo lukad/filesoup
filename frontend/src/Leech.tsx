@@ -3,8 +3,8 @@ import useWebTorrent from "./hooks/useWebTorrent";
 import { useParams } from "@solidjs/router";
 import ProgressBar from "./ProgressBar";
 import Spinner from "./Spinner";
-import Header from "./Header";
-import Footer from "./Footer";
+import PageLayout from "./PageLayout";
+import { Glyph } from "./Illustrations";
 import { summarizeDownload, trackEvent } from "./analytics";
 
 function downloadBlobUrl(name: string, blobUrl: string) {
@@ -75,9 +75,12 @@ function Leech() {
   const [magnetUri, setMagnetUri] = createSignal<string | null>(null);
   const [blobUrl, setBlobUrl] = createSignal<string | null>(null);
   const [torrentAdded, setTorrentAdded] = createSignal(false);
-  const [downloadStartedTracked, setDownloadStartedTracked] = createSignal(false);
-  const [downloadCompletedTracked, setDownloadCompletedTracked] = createSignal(false);
-  const [downloadNotFoundTracked, setDownloadNotFoundTracked] = createSignal(false);
+  const [downloadStartedTracked, setDownloadStartedTracked] =
+    createSignal(false);
+  const [downloadCompletedTracked, setDownloadCompletedTracked] =
+    createSignal(false);
+  const [downloadNotFoundTracked, setDownloadNotFoundTracked] =
+    createSignal(false);
   const [downloadErrorTracked, setDownloadErrorTracked] = createSignal(false);
 
   // Clean up blob URL on component unmount
@@ -112,7 +115,10 @@ function Leech() {
       .catch((error) => {
         console.error("Failed to fetch file info:", error);
         if (state().type === "loading") {
-          setState({ type: "error", message: "Failed to load file. Please try again." });
+          setState({
+            type: "error",
+            message: "Failed to load file. Please try again.",
+          });
         }
       });
   });
@@ -125,7 +131,10 @@ function Leech() {
 
       torrent.on("download", () => {
         if (!downloadStartedTracked() && torrent.progress > 0) {
-          trackEvent("download_started", summarizeDownload(torrent.name, torrent.length));
+          trackEvent(
+            "download_started",
+            summarizeDownload(torrent.name, torrent.length),
+          );
           setDownloadStartedTracked(true);
         }
 
@@ -143,11 +152,17 @@ function Leech() {
       torrent.on("done", () => {
         torrent.files[0].blob().then((blob) => {
           if (!downloadStartedTracked()) {
-            trackEvent("download_started", summarizeDownload(torrent.name, torrent.length));
+            trackEvent(
+              "download_started",
+              summarizeDownload(torrent.name, torrent.length),
+            );
             setDownloadStartedTracked(true);
           }
           if (!downloadCompletedTracked()) {
-            trackEvent("download_completed", summarizeDownload(torrent.name, torrent.length));
+            trackEvent(
+              "download_completed",
+              summarizeDownload(torrent.name, torrent.length),
+            );
             setDownloadCompletedTracked(true);
           }
           setState({ type: "done", fileName: torrent.name });
@@ -187,192 +202,121 @@ function Leech() {
     return remaining / s.downloadSpeed;
   };
 
-  const getFileIcon = () => {
-    // File type icons could be expanded here
-    return (
-      <svg
-        class="w-12 h-12 text-white/80"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
-      </svg>
-    );
-  };
-
   return (
-    <div class="w-full min-h-screen flex flex-col">
-      <Header icon="leech" />
-
-      {/* Main content */}
-      <main class="flex-1 flex items-center justify-center p-4">
-        <div class="w-full max-w-xl">
-          {/* Loading state */}
-          <Show when={state().type === "loading"}>
-            <div class="flex flex-col items-center gap-4">
-              <Spinner size="lg" message="Connecting to peers..." />
-            </div>
-          </Show>
-
-          {/* Not found state */}
-          <Show when={state().type === "not_found"}>
-            <div class="glass-card p-8 text-center animate-scale-in">
-              <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/20 flex items-center justify-center">
-                <svg
-                  class="w-8 h-8 text-red-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-white mb-2">File Not Found</h2>
-              <p class="text-white/60">
-                This file may have expired or the link is incorrect.
-              </p>
-            </div>
-          </Show>
-
-          {/* Error state */}
-          <Show when={state().type === "error"}>
-            <div class="glass-card p-8 text-center animate-scale-in">
-              <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/20 flex items-center justify-center">
-                <svg
-                  class="w-8 h-8 text-red-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                  />
-                </svg>
-              </div>
-              <h2 class="text-2xl font-bold text-white mb-2">Error</h2>
-              <p class="text-white/60">
-                {(() => {
-                  const s = state();
-                  if (s.type === "error") return s.message;
-                  return "";
-                })()}
-              </p>
-            </div>
-          </Show>
-
-          {/* Downloading state */}
-          <Show when={state().type === "leeching"}>
-            <div class="glass-card p-8 animate-scale-in">
-              {(() => {
-                const s = state();
-                if (s.type !== "leeching") return null;
-                return (
-                  <>
-                    {/* File info header */}
-                    <div class="flex items-center gap-4 mb-6">
-                      <div class="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                        {getFileIcon()}
-                      </div>
-                      <div class="min-w-0 flex-1">
-                        <h2 class="text-lg font-semibold text-white truncate">
-                          {s.fileName}
-                        </h2>
-                        <p class="text-white/50 text-sm">
-                          {formatBytes(s.length)}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Progress bar */}
-                    <ProgressBar
-                      label="Downloading"
-                      detail={`${formatBytes(s.downloadSpeed, "/s")}`}
-                      progress={s.progress}
-                      showPeers={true}
-                      peers={s.peers}
-                    />
-
-                    {/* Stats grid */}
-                    <div class="grid grid-cols-3 gap-4 mt-6">
-                      <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-                        <p class="text-white/50 text-xs mb-1">Downloaded</p>
-                        <p class="text-white font-semibold">
-                          {formatBytes(s.received)}
-                        </p>
-                      </div>
-                      <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-                        <p class="text-white/50 text-xs mb-1">Speed</p>
-                        <p class="text-cyan-400 font-semibold">
-                          {formatBytes(s.downloadSpeed, "/s")}
-                        </p>
-                      </div>
-                      <div class="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-                        <p class="text-white/50 text-xs mb-1">ETA</p>
-                        <p class="text-white font-semibold">
-                          {calculateETA() ? formatTime(calculateETA()!) : "--"}
-                        </p>
-                      </div>
-                    </div>
-                  </>
-                );
-              })()}
-            </div>
-          </Show>
-
-          {/* Done state */}
-          <Show when={state().type === "done"}>
-            <div class="glass-card p-8 text-center animate-scale-in">
-              {(() => {
-                const s = state();
-                if (s.type !== "done") return null;
-                return (
-                  <>
-                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-green-400/20 to-cyan-400/20 border border-white/20 flex items-center justify-center">
-                      <svg
-                        class="w-10 h-10 text-green-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <h2 class="text-2xl font-bold text-white mb-2">
-                      Download Complete!
-                    </h2>
-                    <p class="text-white/60 mb-6">{s.fileName}</p>
-                    <p class="text-white/40 text-sm">
-                      Your file has been saved to your downloads folder
-                    </p>
-                  </>
-                );
-              })()}
-            </div>
-          </Show>
+    <PageLayout mode="leech">
+      <Show when={state().type === "loading"}>
+        <div class="transfer-card state-card" role="status">
+          <Spinner size="lg" />
+          <h2>Connecting to the sender…</h2>
+          <p class="muted">Your download will start automatically.</p>
+          <p class="state-footnote">
+            The sender needs to keep their tab open, too.
+          </p>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </Show>
+      <Show when={state().type === "not_found"}>
+        <div class="transfer-card state-card" role="alert">
+          <div class="state-icon state-icon-error">
+            <Glyph name="info" />
+          </div>
+          <h2>This link is unavailable.</h2>
+          <p class="muted">
+            The link may have expired or be incorrect. Ask the sender for a
+            new one.
+          </p>
+          <p class="state-footnote">
+            Links expire after 10 minutes of inactivity.
+          </p>
+        </div>
+      </Show>
+      <Show when={state().type === "error"}>
+        <div class="transfer-card state-card" role="alert">
+          <div class="state-icon state-icon-error">
+            <Glyph name="info" />
+          </div>
+          <h2>Couldn’t get that file.</h2>
+          <p class="muted">
+            {(() => {
+              const s = state();
+              return s.type === "error" ? s.message : "";
+            })()}
+          </p>
+        </div>
+      </Show>
+      <Show when={state().type === "leeching"}>
+        <div class="transfer-card download-card">
+          {(() => {
+            const s = state();
+            if (s.type !== "leeching") return null;
+            return (
+              <>
+                <div class="card-topline">
+                  <h2>Downloading your file…</h2>
+                  <Glyph name="download" />
+                </div>
+                <div class="file-row">
+                  <Glyph name="file" />
+                  <span title={s.fileName}>{s.fileName}</span>
+                  <span class="file-size">{formatBytes(s.length)}</span>
+                </div>
+                <ProgressBar
+                  label="Downloading"
+                  detail={formatBytes(s.downloadSpeed, "/s")}
+                  progress={s.progress}
+                  showPeers={true}
+                  peers={s.peers}
+                />
+                <dl class="download-stats">
+                  <div>
+                    <dt>RECEIVED</dt>
+                    <dd>{formatBytes(s.received)}</dd>
+                  </div>
+                  <div>
+                    <dt>TOTAL SIZE</dt>
+                    <dd>{formatBytes(s.length)}</dd>
+                  </div>
+                  <div>
+                    <dt>TIME LEFT</dt>
+                    <dd>
+                      {calculateETA() ? formatTime(calculateETA()!) : "—"}
+                    </dd>
+                  </div>
+                </dl>
+                <p class="state-footnote">
+                  Keep this tab open until the download finishes.
+                </p>
+              </>
+            );
+          })()}
+        </div>
+      </Show>
+      <Show when={state().type === "done"}>
+        <div class="transfer-card state-card" role="status">
+          {(() => {
+            const s = state();
+            if (s.type !== "done") return null;
+            return (
+              <>
+                <div class="state-icon state-icon-success">
+                  <Glyph name="check" />
+                </div>
+                <h2>Download complete.</h2>
+                <p class="muted">
+                  Find your file in your browser’s downloads.
+                </p>
+                <div class="file-row">
+                  <Glyph name="file" />
+                  <span title={s.fileName}>{s.fileName}</span>
+                  <span class="file-ready">
+                    <Glyph name="check" />
+                  </span>
+                </div>
+              </>
+            );
+          })()}
+        </div>
+      </Show>
+    </PageLayout>
   );
 }
 

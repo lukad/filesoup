@@ -13,7 +13,7 @@ Peer-to-peer file sharing. Drop a file, get a link, share it. The file transfers
 
 You'll need:
 - Rust (1.70+)
-- Node.js 18+ and pnpm
+- Node.js 20+ and pnpm
 
 ### Backend
 
@@ -31,6 +31,18 @@ pnpm dev
 ```
 
 Vite serves on port 5173 and proxies API requests to the backend.
+
+## Frontend tests
+
+```bash
+cd frontend
+pnpm exec playwright install chromium
+pnpm test
+```
+
+To use an installed Chrome instead, run `PLAYWRIGHT_CHANNEL=chrome pnpm test`.
+The tests start their own Vite server and include a real 600 MB preparation check,
+plus controlled progress, empty-file, error, and retry scenarios.
 
 ## Building
 

@@ -2,19 +2,20 @@ import { trackEvent } from "./analytics";
 
 export default function Footer() {
   return (
-    <footer class="py-4 px-4 text-center text-white/30 text-sm">
-      <p>
-        Powered by WebTorrent • No servers, just P2P •{" "}
+    <footer class="site-footer">
+      <div class="footer-links">
+        <span>Made with WebTorrent</span>
         <a
           href="https://github.com/lukad/filesoup"
           target="_blank"
           rel="noopener noreferrer"
-          class="hover:text-white/60 transition-colors"
-          onClick={() => trackEvent("github_link_clicked", { location: "footer" })}
+          onClick={() =>
+            trackEvent("github_link_clicked", { location: "footer" })
+          }
         >
-          GitHub
+          GitHub <span aria-hidden="true">↗</span>
         </a>
-      </p>
+      </div>
     </footer>
   );
 }

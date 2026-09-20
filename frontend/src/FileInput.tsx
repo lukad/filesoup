@@ -1,6 +1,5 @@
-import { createSignal } from "solid-js";
-import { cloudArrowUp, document } from "solid-heroicons/outline";
-import { Icon } from "solid-heroicons";
+import { Show, createSignal } from "solid-js";
+import { DropIllustration, Glyph, SharingStamp } from "./Illustrations";
 import { summarizeFiles, trackEvent } from "./analytics";
 
 function formatBytes(bytes: number): string {
@@ -68,76 +67,66 @@ function FileInput(props: FileInputProps) {
     fileInput.click();
   };
 
-  const getFileIcon = () => {
-    const file = selectedFile();
-    if (!file) return cloudArrowUp;
-    // Could return different icons based on file type
-    return document;
-  };
-
-  const getDropZoneClass = () => {
-    const baseClass =
-      "glass-card p-8 sm:p-12 flex flex-col items-center justify-center gap-6 cursor-pointer transition-all duration-300 border-2";
-    if (dragOver()) {
-      return `${baseClass} border-purple-500 bg-purple-500/20 scale-105`;
-    }
-    return `${baseClass} border-dashed border-white/20 hover:border-purple-400/50 hover:bg-white/5`;
-  };
-
   return (
-    <div class="w-full h-full flex flex-col items-center justify-center p-4">
+    <div class="upload-area">
       <div
-        class={getDropZoneClass()}
+        class="drop-mat"
         onDragEnter={onDragEnter}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-        onClick={onClick}
       >
-        {/* Icon container with animation */}
-        <div
-          class={`relative ${dragOver() ? "animate-pulse" : "animate-float"}`}
+        <button
+          type="button"
+          class={`drop-zone ${dragOver() ? "is-dragging" : ""}`}
+          onClick={onClick}
+          aria-label="Choose a file or drop it here"
+          aria-describedby="file-input-hint"
         >
-          <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full blur-2xl opacity-30" />
-          <div class="relative bg-gradient-to-br from-purple-500/20 to-cyan-400/20 rounded-2xl p-6 border border-white/20">
-            <Icon path={getFileIcon()} class="w-16 h-16 text-white" />
-          </div>
-        </div>
-
-        {/* Text content */}
-        <div class="text-center space-y-2">
-          <h3 class="text-2xl font-bold text-white">
-            {selectedFile() ? "File Selected!" : "Drop your file here"}
-          </h3>
-          <p class="text-white/60 text-sm">
-            {selectedFile()
-              ? `${selectedFile()!.name} (${formatBytes(selectedFile()!.size)})`
-              : "or click to browse • Any file type supported"}
-          </p>
-        </div>
-
-        {/* Hidden file input */}
-        <input type="file" ref={fileInput} onChange={onChange} class="hidden" />
+          <SharingStamp />
+          <DropIllustration />
+          <span class="drop-title" aria-live="polite">
+            {dragOver()
+              ? "Release to add the file."
+              : selectedFile()
+                ? "File selected."
+                : "Your file goes here."}
+          </span>
+          <Show
+            when={selectedFile()}
+            fallback={
+              <span class="drop-description">
+                Drag it in or choose a file from your device.
+              </span>
+            }
+          >
+            {(file) => (
+              <span class="drop-description">
+                {file().name} ({formatBytes(file().size)})
+              </span>
+            )}
+          </Show>
+          <span class="button button-primary choose-file">
+            <Glyph name="arrow-up" /> Choose a file
+          </span>
+          <span class="drop-file-types">
+            Documents, photos, videos, ZIPs. Any file type works.
+          </span>
+        </button>
       </div>
-
-      {/* Feature hints */}
-      <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-        <div class="glass-card p-4">
-          <div class="text-2xl mb-2">⚡</div>
-          <div class="text-sm font-medium text-white">Instant</div>
-          <div class="text-xs text-white/50">No waiting, just share</div>
-        </div>
-        <div class="glass-card p-4">
-          <div class="text-2xl mb-2">🔒</div>
-          <div class="text-sm font-medium text-white">Private</div>
-          <div class="text-xs text-white/50">Your files never touch a server</div>
-        </div>
-        <div class="glass-card p-4">
-          <div class="text-2xl mb-2">∞</div>
-          <div class="text-sm font-medium text-white">Simple</div>
-          <div class="text-xs text-white/50">Drag, drop, done</div>
-        </div>
-      </div>
+      <input
+        type="file"
+        ref={fileInput}
+        onChange={onChange}
+        class="hidden"
+        aria-label="Choose a file"
+      />
+      <p class="under-card-note" id="file-input-hint">
+        <span class="small-asterisk" aria-hidden="true">
+          ✳
+        </span>{" "}
+        Keep both tabs open until the download finishes.
+      </p>
     </div>
   );
 }

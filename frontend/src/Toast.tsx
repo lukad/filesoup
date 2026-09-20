@@ -27,18 +27,6 @@ const icons = {
   info: informationCircle,
 };
 
-const iconColors = {
-  success: "text-green-400",
-  error: "text-red-400",
-  info: "text-cyan-400",
-};
-
-const bgColors = {
-  success: "border-green-500/30 bg-green-500/10",
-  error: "border-red-500/30 bg-red-500/10",
-  info: "border-cyan-500/30 bg-cyan-500/10",
-};
-
 // Context type
 interface ToastContextType {
   showToast: (message: string, type?: ToastType, duration?: number) => void;
@@ -66,12 +54,14 @@ export function ToastProvider(props: { children: any }) {
   };
 
   const removeToast = (id: number) => {
-    setToasts(produce((toasts) => {
-      const index = toasts.findIndex((t) => t.id === id);
-      if (index !== -1) {
-        toasts.splice(index, 1);
-      }
-    }));
+    setToasts(
+      produce((toasts) => {
+        const index = toasts.findIndex((t) => t.id === id);
+        if (index !== -1) {
+          toasts.splice(index, 1);
+        }
+      }),
+    );
   };
 
   return (
@@ -104,18 +94,16 @@ function Toast(props: ToastProps) {
 
   return (
     <div
-      class={`fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-xl border backdrop-blur-xl shadow-2xl transition-all duration-300 ${bgColors[props.type]} ${
-        visible() ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-      }`}
+      role={props.type === "error" ? "alert" : "status"}
+      class={`toast toast-${props.type} ${visible() ? "is-visible" : "is-hidden"}`}
     >
-      <Icon
-        path={icons[props.type]}
-        class={`w-6 h-6 ${iconColors[props.type]}`}
-      />
-      <span class="text-white font-medium">{props.message}</span>
+      <Icon path={icons[props.type]} class="icon toast-icon" />
+      <span>{props.message}</span>
       <button
         onClick={close}
-        class="ml-2 text-white/50 hover:text-white transition-colors"
+        class="toast-close"
+        type="button"
+        aria-label="Dismiss notification"
       >
         <svg
           class="w-5 h-5"
@@ -137,7 +125,7 @@ function Toast(props: ToastProps) {
 
 function ToastContainer(props: { toasts: ToastItem[] }) {
   return (
-    <div class="fixed top-0 right-0 z-50 p-4 flex flex-col gap-2 pointer-events-none">
+    <div class="toast-container">
       {props.toasts.map((toast) => (
         <div class="pointer-events-auto">
           <Toast {...toast.props} />
