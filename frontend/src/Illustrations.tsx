@@ -32,7 +32,7 @@ export function SharingStamp() {
           cx="60"
           cy="60"
           r="44"
-          stroke="var(--ink)"
+          stroke="var(--on-butter)"
           stroke-width=".75"
           opacity=".45"
         />
@@ -134,17 +134,17 @@ export function DropIllustration() {
       />
       <path
         d="M70 118c3 8 8 13 16 16"
-        stroke="var(--surface)"
+        stroke="var(--on-accent)"
         stroke-width="1.6"
         stroke-linecap="round"
       />
-      <g class="bowl-face" fill="var(--surface)">
+      <g class="bowl-face" fill="var(--on-accent)">
         <circle cx="109" cy="122" r="2" />
         <circle cx="131" cy="122" r="2" />
         <path
           d="M114 129q6 6 12 0"
           fill="none"
-          stroke="var(--surface)"
+          stroke="var(--on-accent)"
           stroke-width="1.7"
           stroke-linecap="round"
         />
