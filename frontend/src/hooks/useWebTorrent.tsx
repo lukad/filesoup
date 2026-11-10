@@ -50,8 +50,8 @@ const useWebTorrent = () => {
     batch(() => {
       setError(
         stage === "prepare_file"
-          ? "Couldn't prepare this file. Please choose it again and try once more."
-          : "Failed to create shareable link. Please try again.",
+          ? "Couldn't prepare this file. Choose it again to retry."
+          : "Failed to create shareable link. Try again in a moment.",
       );
       setState("idle");
     });

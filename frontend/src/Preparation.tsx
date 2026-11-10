@@ -27,18 +27,20 @@ export default function Preparation(props: {
   return (
     <div class="transfer-card preparation-card">
       <div class="card-topline">
-        <h2>{starting() ? "File selected." : "Getting your file ready…"}</h2>
+        <h2>{starting() ? "File selected" : "Preparing your link"}</h2>
         <Show when={!starting()}>
           <Spinner size="sm" />
         </Show>
       </div>
       <p class="muted">
-        Larger files take longer to prepare. Your share link will appear here
-        when it’s ready.
+        Your browser reads the file once to fingerprint it, so the other side
+        can check every piece it gets. Big files take longer.
       </p>
       <div class="file-row">
         <Glyph name="file" />
-        <span title={props.fileName}>{props.fileName}</span>
+        <span class="file-name" title={props.fileName}>
+          {props.fileName}
+        </span>
         <span class="file-size">{formatBytes(props.progress.totalBytes)}</span>
       </div>
       <Show
@@ -51,7 +53,11 @@ export default function Preparation(props: {
               progress={progress()}
             />
             <Show when={!reading()}>
-              <div class="preparation-next-step" role="status" aria-live="polite">
+              <div
+                class="preparation-next-step"
+                role="status"
+                aria-live="polite"
+              >
                 <span class="preparation-pulse" aria-hidden="true" />
                 <p>
                   {props.progress.phase === "publishing"
@@ -64,18 +70,15 @@ export default function Preparation(props: {
         }
       >
         <div class="preparation-starting" role="status">
-          <Spinner size="lg" />
+          <Spinner size="md" />
           <div>
-            <strong>Getting ready…</strong>
-            <p>
-              We’re opening your file. Progress will appear as soon as it’s
-              available.
-            </p>
+            <strong>Opening the file…</strong>
+            <p>Progress shows up as soon as the browser starts reading it.</p>
           </div>
         </div>
       </Show>
-      <p class="state-footnote">
-        Your file stays in your browser. Keep this tab open.
+      <p class="card-note">
+        The file stays in this tab. Closing it cancels the share.
       </p>
     </div>
   );

@@ -38,10 +38,10 @@ function ShareLink(props: CopyToClipboardProps) {
 
     void QRCode.toDataURL(content, {
       errorCorrectionLevel: "M",
-      margin: 4,
+      margin: 2,
       width: 320,
       color: {
-        dark: "#263c32",
+        dark: "#18191b",
         light: "#ffffff",
       },
     })
@@ -68,10 +68,10 @@ function ShareLink(props: CopyToClipboardProps) {
         has_native_share: canShare,
       });
       setCopied(true);
-      showToast("Link copied to clipboard!", "success");
+      showToast("Link copied", "success");
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      showToast("Failed to copy link", "error");
+      showToast("Couldn’t copy the link. Select it and copy it by hand.", "error");
     }
   };
 
@@ -82,14 +82,14 @@ function ShareLink(props: CopyToClipboardProps) {
           ? `Download ${props.fileName}`
           : "Download shared file",
         text: props.fileName
-          ? `Download ${props.fileName} with Filesoup`
-          : "Download this shared file with Filesoup",
+          ? `Download ${props.fileName} with FileSoup`
+          : "Download this shared file with FileSoup",
         url: props.content,
       });
       trackEvent("share_link_shared", {
         method: "native_share",
       });
-      showToast("Share dialog opened", "success");
+      showToast("Link shared", "success");
     } catch (err) {
       if (
         err instanceof DOMException &&
@@ -97,100 +97,99 @@ function ShareLink(props: CopyToClipboardProps) {
       ) {
         return;
       }
-      showToast("Failed to share link", "error");
+      showToast("Couldn’t open the share sheet", "error");
     }
   };
 
   return (
-    <div class="share-area">
-      <div class="transfer-card share-card">
-        <div class="card-topline">
-          <span class="status-label">
-            <span class="status-dot" /> Ready to share
+    <div class="transfer-card share-card">
+      <h2>Your link is ready</h2>
+      <p class="muted">
+        Send it to whoever needs the file, or let them scan the QR code. It
+        works for as long as this tab stays open.
+      </p>
+      <Show when={props.fileName}>
+        <div class="file-row">
+          <Glyph name="file" />
+          <span class="file-name" title={props.fileName}>
+            {props.fileName}
+          </span>
+          <span class="file-ready">
+            <Glyph name="check" />
+            <span class="sr-only">Ready</span>
           </span>
         </div>
-        <h2>Your link is ready.</h2>
-        <p class="muted">
-          Copy the link and send it over, or let the other person scan the QR
-          code.
-        </p>
-        <Show when={props.fileName}>
-          <div class="file-row">
-            <Glyph name="file" />
-            <span title={props.fileName}>{props.fileName}</span>
-            <span class="file-ready">
-              <Glyph name="check" />
-            </span>
-          </div>
-        </Show>
-        <div class="share-controls" classList={{ "has-qr": showQrCode() }}>
-          <div class="share-link-actions">
-            <div class="share-link-box">
-              <p class="field-label">YOUR SHARE LINK</p>
-              <p class="share-url" title={props.content}>
-                {props.content}
-              </p>
-              <button
-                type="button"
-                onClick={copy}
-                class={`button button-primary copy-button ${copied() ? "is-copied" : ""}`}
-              >
-                <Icon path={copied() ? check : clipboard} class="icon" />
-                <span aria-live="polite">{copied() ? "Copied!" : "Copy link"}</span>
-              </button>
-            </div>
-            <div class="share-actions">
-              <Show when={canShare}>
-                <button
-                  type="button"
-                  onClick={share}
-                  class="button button-secondary"
-                >
-                  <Icon path={shareIcon} class="icon" /> Share link
-                </button>
-              </Show>
-              <button
-                type="button"
-                onClick={() => setShowQrCode((visible) => !visible)}
-                class="button button-secondary"
-                aria-expanded={showQrCode()}
-                aria-controls="share-qr-code"
-              >
-                <Icon path={qrCode} class="icon" />{" "}
-                {showQrCode() ? "Hide QR code" : "Show QR code"}
-              </button>
-            </div>
-          </div>
-          <Show when={showQrCode()}>
-            <div class="qr-panel" id="share-qr-code">
-              <Show
-                when={qrCodeUrl()}
-                fallback={
-                  <p role="status" class="muted">
-                    {qrCodeFailed()
-                      ? "QR code unavailable"
-                      : "Generating QR code..."}
-                  </p>
-                }
-              >
-                <img
-                  src={qrCodeUrl()}
-                  alt="QR code for the share link"
-                  width="220"
-                  height="220"
-                />
-              </Show>
-              <p>Scan to open on another device.</p>
-            </div>
-          </Show>
+      </Show>
+      <div class="share-link-box">
+        <label class="field-label" for="share-url">
+          Share link
+        </label>
+        <div class="link-field">
+          <input
+            id="share-url"
+            class="share-url"
+            type="text"
+            readOnly
+            value={props.content}
+            title={props.content}
+            onFocus={(e) => e.currentTarget.select()}
+          />
+          <button
+            type="button"
+            onClick={copy}
+            class={`button button-primary copy-button ${copied() ? "is-copied" : ""}`}
+          >
+            <Icon path={copied() ? check : clipboard} class="icon" />
+            <span aria-live="polite">{copied() ? "Copied" : "Copy link"}</span>
+          </button>
         </div>
       </div>
-      <div class="keep-open-note">
-        <Glyph name="info" />
-        <p>
-          <strong>Keep both tabs open</strong> until the download finishes.
-        </p>
+      <div class="share-actions">
+        <Show when={canShare}>
+          <button
+            type="button"
+            onClick={share}
+            class="button button-secondary"
+          >
+            <Icon path={shareIcon} class="icon" /> Share link
+          </button>
+        </Show>
+        <button
+          type="button"
+          onClick={() => setShowQrCode((visible) => !visible)}
+          class="button button-secondary"
+          aria-expanded={showQrCode()}
+          aria-controls="share-qr-code"
+        >
+          <Icon path={qrCode} class="icon" />{" "}
+          {showQrCode() ? "Hide QR code" : "Show QR code"}
+        </button>
       </div>
+      <Show when={showQrCode()}>
+        <div class="qr-panel" id="share-qr-code">
+          <div class="qr-frame">
+            <Show
+              when={qrCodeUrl()}
+              fallback={
+                <p role="status" class="qr-status">
+                  {qrCodeFailed() ? "QR code unavailable" : "Generating…"}
+                </p>
+              }
+            >
+              <img
+                src={qrCodeUrl()}
+                alt="QR code for the share link"
+                width="160"
+                height="160"
+              />
+            </Show>
+          </div>
+          <p>Point a phone camera at it to open the link there.</p>
+        </div>
+      </Show>
+      <p class="card-note">
+        Keep this tab open until they’ve finished downloading.
+      </p>
     </div>
   );
 }

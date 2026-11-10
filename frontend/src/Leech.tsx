@@ -117,7 +117,7 @@ function Leech() {
         if (state().type === "loading") {
           setState({
             type: "error",
-            message: "Failed to load file. Please try again.",
+            message: "The file details didn’t load. Reload the page to try again.",
           });
         }
       });
@@ -206,35 +206,26 @@ function Leech() {
     <PageLayout mode="leech">
       <Show when={state().type === "loading"}>
         <div class="transfer-card state-card" role="status">
-          <Spinner size="lg" />
+          <Spinner size="md" />
           <h2>Connecting to the sender…</h2>
-          <p class="muted">Your download will start automatically.</p>
-          <p class="state-footnote">
-            The sender needs to keep their tab open, too.
-          </p>
+          <p class="muted">The download starts on its own once you’re connected.</p>
+          <p class="card-note">This only works while the sender’s tab is open.</p>
         </div>
       </Show>
       <Show when={state().type === "not_found"}>
         <div class="transfer-card state-card" role="alert">
-          <div class="state-icon state-icon-error">
-            <Glyph name="info" />
-          </div>
-          <h2>This link is unavailable.</h2>
+          <Glyph name="info" class="state-icon state-icon-error" />
+          <h2>This link doesn’t work anymore</h2>
           <p class="muted">
-            The link may have expired or be incorrect. Ask the sender for a
-            new one.
-          </p>
-          <p class="state-footnote">
-            Links expire after 10 minutes of inactivity.
+            Links expire 10 minutes after their last use, and stop working when
+            the sender closes their tab. Ask them for a new one.
           </p>
         </div>
       </Show>
       <Show when={state().type === "error"}>
         <div class="transfer-card state-card" role="alert">
-          <div class="state-icon state-icon-error">
-            <Glyph name="info" />
-          </div>
-          <h2>Couldn’t get that file.</h2>
+          <Glyph name="info" class="state-icon state-icon-error" />
+          <h2>Couldn’t load this file</h2>
           <p class="muted">
             {(() => {
               const s = state();
@@ -250,13 +241,12 @@ function Leech() {
             if (s.type !== "leeching") return null;
             return (
               <>
-                <div class="card-topline">
-                  <h2>Downloading your file…</h2>
-                  <Glyph name="download" />
-                </div>
+                <h2>Downloading</h2>
                 <div class="file-row">
                   <Glyph name="file" />
-                  <span title={s.fileName}>{s.fileName}</span>
+                  <span class="file-name" title={s.fileName}>
+                    {s.fileName}
+                  </span>
                   <span class="file-size">{formatBytes(s.length)}</span>
                 </div>
                 <ProgressBar
@@ -268,21 +258,21 @@ function Leech() {
                 />
                 <dl class="download-stats">
                   <div>
-                    <dt>RECEIVED</dt>
+                    <dt>Received</dt>
                     <dd>{formatBytes(s.received)}</dd>
                   </div>
                   <div>
-                    <dt>TOTAL SIZE</dt>
+                    <dt>Size</dt>
                     <dd>{formatBytes(s.length)}</dd>
                   </div>
                   <div>
-                    <dt>TIME LEFT</dt>
+                    <dt>Time left</dt>
                     <dd>
                       {calculateETA() ? formatTime(calculateETA()!) : "—"}
                     </dd>
                   </div>
                 </dl>
-                <p class="state-footnote">
+                <p class="card-note">
                   Keep this tab open until the download finishes.
                 </p>
               </>
@@ -297,18 +287,17 @@ function Leech() {
             if (s.type !== "done") return null;
             return (
               <>
-                <div class="state-icon state-icon-success">
-                  <Glyph name="check" />
-                </div>
-                <h2>Download complete.</h2>
-                <p class="muted">
-                  Find your file in your browser’s downloads.
-                </p>
+                <Glyph name="check" class="state-icon state-icon-success" />
+                <h2>Download complete</h2>
+                <p class="muted">It’s in your browser’s downloads.</p>
                 <div class="file-row">
                   <Glyph name="file" />
-                  <span title={s.fileName}>{s.fileName}</span>
+                  <span class="file-name" title={s.fileName}>
+                    {s.fileName}
+                  </span>
                   <span class="file-ready">
                     <Glyph name="check" />
+                    <span class="sr-only">Saved</span>
                   </span>
                 </div>
               </>

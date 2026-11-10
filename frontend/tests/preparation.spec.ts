@@ -98,7 +98,7 @@ test("paints before seeding, reports real bytes, and distinguishes finalization 
   await selectFile(page);
   const progress = page.getByRole("progressbar");
   await expect(
-    page.getByRole("heading", { name: "File selected." }),
+    page.getByRole("heading", { name: "File selected" }),
   ).toBeVisible();
   await expect(page.locator(".preparation-starting .spinner")).toBeVisible();
   await expect(progress).toHaveCount(0);
@@ -141,7 +141,7 @@ test("a drop immediately shows opaque feedback even when no progress callbacks a
     const transfer = new DataTransfer();
     transfer.items.add(new File(["hello"], "dropped-file.txt"));
     document
-      .querySelector(".drop-mat")!
+      .querySelector(".drop-area")!
       .dispatchEvent(
         new DragEvent("drop", { bubbles: true, dataTransfer: transfer }),
       );
@@ -154,7 +154,7 @@ test("a drop immediately shows opaque feedback even when no progress callbacks a
     };
   });
   expect(atDrop).toEqual({
-    heading: "File selected.",
+    heading: "File selected",
     opacity: "1",
     animation: "none",
     seedCalls: 0,
@@ -166,9 +166,9 @@ test("a drop immediately shows opaque feedback even when no progress callbacks a
   // The receipt and spinner must remain visible throughout the initial wait.
   await page.waitForTimeout(1_000);
   await expect(
-    page.getByRole("heading", { name: "File selected." }),
+    page.getByRole("heading", { name: "File selected" }),
   ).toBeVisible();
-  await expect(page.getByRole("status")).toContainText("Getting ready…");
+  await expect(page.getByRole("status")).toContainText("Opening the file…");
   await expect(page.locator(".preparation-starting .spinner")).toBeVisible();
   await expect(page.getByRole("progressbar")).toHaveCount(0);
   await page.screenshot({
@@ -198,7 +198,7 @@ test("empty files finish preparation without NaN progress", async ({
   await page.goto("/");
   await selectFile(page, { ...file, buffer: Buffer.alloc(0) });
   await expect(
-    page.getByRole("heading", { name: "File selected." }),
+    page.getByRole("heading", { name: "File selected" }),
   ).toBeVisible();
   await page.evaluate(() => window.seedTest.attempts[0].emit("metadata"));
   await expect(page.getByRole("progressbar")).toHaveAttribute(
@@ -236,7 +236,7 @@ test("read failures allow retry and ignore late callbacks from the failed attemp
     window.seedTest.attempts[0].finish();
   });
   await expect(
-    page.getByRole("heading", { name: "File selected." }),
+    page.getByRole("heading", { name: "File selected" }),
   ).toBeVisible();
   await page.evaluate(() => window.seedTest.attempts[1].progress(50, 100));
   await expect(page.getByRole("progressbar")).toHaveAttribute(
@@ -357,7 +357,7 @@ test("dropping a real 600 MB file shows receipt before progress and produces a s
       const transfer = new DataTransfer();
       transfer.items.add(input.files![0]);
       document
-        .querySelector(".drop-mat")!
+        .querySelector(".drop-area")!
         .dispatchEvent(
           new DragEvent("drop", { bubbles: true, dataTransfer: transfer }),
         );

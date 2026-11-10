@@ -36,12 +36,11 @@ function Seed() {
       </Show>
       <Show when={error()}>
         <div class="transfer-card state-card" role="alert">
-          <div class="state-icon state-icon-error">
-            <Glyph name="info" />
-          </div>
-          <h2>Couldn’t prepare your file.</h2>
+          <Glyph name="info" class="state-icon state-icon-error" />
+          <h2>That file couldn’t be shared</h2>
           <p class="muted">{error()}</p>
           <button
+            type="button"
             onClick={() => {
               trackEvent("seed_error_retry");
               clearError();
@@ -49,7 +48,7 @@ function Seed() {
             }}
             class="button button-primary"
           >
-            Try again <Glyph name="arrow-right" />
+            Try again
           </button>
         </div>
       </Show>

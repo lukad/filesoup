@@ -1,5 +1,5 @@
 import { Show, createSignal } from "solid-js";
-import { DropIllustration, Glyph, SharingStamp } from "./Illustrations";
+import { Glyph } from "./Illustrations";
 import { summarizeFiles, trackEvent } from "./analytics";
 
 function formatBytes(bytes: number): string {
@@ -70,7 +70,7 @@ function FileInput(props: FileInputProps) {
   return (
     <div class="upload-area">
       <div
-        class="drop-mat"
+        class="drop-area"
         onDragEnter={onDragEnter}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
@@ -83,35 +83,24 @@ function FileInput(props: FileInputProps) {
           aria-label="Choose a file or drop it here"
           aria-describedby="file-input-hint"
         >
-          <SharingStamp />
-          <DropIllustration />
+          <Glyph name="tray-up" class="drop-icon" />
           <span class="drop-title" aria-live="polite">
-            {dragOver()
-              ? "Release to add the file."
-              : selectedFile()
-                ? "File selected."
-                : "Your file goes here."}
+            <Show
+              when={!dragOver() && !selectedFile()}
+              fallback={dragOver() ? "Let go to add it" : "File selected"}
+            >
+              <span class="pointer-fine">Drop a file here</span>
+              <span class="pointer-coarse">Pick a file to send</span>
+            </Show>
           </span>
-          <Show
-            when={selectedFile()}
-            fallback={
-              <span class="drop-description">
-                Drag it in or choose a file from your device.
-              </span>
-            }
-          >
+          <Show when={selectedFile()}>
             {(file) => (
               <span class="drop-description">
-                {file().name} ({formatBytes(file().size)})
+                {file().name} · {formatBytes(file().size)}
               </span>
             )}
           </Show>
-          <span class="button button-primary choose-file">
-            <Glyph name="arrow-up" /> Choose a file
-          </span>
-          <span class="drop-file-types">
-            Documents, photos, videos, ZIPs. Any file type works.
-          </span>
+          <span class="button button-primary choose-file">Choose a file</span>
         </button>
       </div>
       <input
@@ -122,10 +111,7 @@ function FileInput(props: FileInputProps) {
         aria-label="Choose a file"
       />
       <p class="under-card-note" id="file-input-hint">
-        <span class="small-asterisk" aria-hidden="true">
-          ✳
-        </span>{" "}
-        Keep both tabs open until the download finishes.
+        Any file type. It stays on this device until someone opens your link.
       </p>
     </div>
   );
